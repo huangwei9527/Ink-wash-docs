@@ -14,6 +14,19 @@ export default new Router({
 			component: () => import('@/pages/Home')
 		},
 		{
+			path: '/dashboard',
+			name: 'DashBoard',
+			component: () => import('@/pages/dash-board'),
+			redirect: {name: 'DashBoardWork'},
+			children: [
+				{
+					path: 'work',
+					name: 'DashBoardWork',
+					component: () => import('@/pages/dash-board-components/work')
+				}
+			]
+		},
+		{
 			path: '/login',
 			name: 'Login',
 			component: () => import('@/pages/Login')

@@ -545,98 +545,12 @@ img {
 .page-content {
   padding: $content-both-sides-padding;
 }
-
-.page-title-wrapper {
-  height: 58px;
-  line-height: 58px;
-  padding: 0 $content-both-sides-padding;
-  font-size: 18px;
-  color: black;
-  border-bottom: 1px solid $border-color;
-}
-
-.page-search-wrapper {
-  min-height: 48px;
-  padding: 4px $content-both-sides-padding;
-  line-height: 48px;
-
-  &::after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden
-  }
-
-  .search-item-label {
-    display: inline-block;
-  }
-
-  .search-item-input {
-    display: inline-block;
-    width: 200px;
-    margin-right: 10px;
-  }
-
-  .search-item-input.small {
-    display: inline-block;
-    width: 138px;
-  }
-
-  .search-item-btn {
-    display: inline-block;
-  }
-}
-
-.page-table-wrapper {
-  .link {
-    text-decoration: underline;
-    color: inherit;
-  }
-
-  .el-table--enable-row-hover .el-table__body tr:hover>td {
-    * {
-      color: $primary;
-    }
-
-    .table-btn {
-      background-color: $primary;
-    }
-  }
-}
-
-.table-btn-show-more {
-  display: inline-block;
-  width: 32px;
-  height: 24px;
-  line-height: 24px;
-  background: rgba(255, 255, 255, 1);
-  border: 1px solid rgba(161, 175, 195, 1);
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: center;
-
-  &:hover {
-    background: $primary;
-    border-color: $primary;
-
-    i {
-      color: white !important;
-    }
-  }
-}
-
-.page-pagination-wrapper {
-  text-align: right;
-  padding: 20px 0;
-}
-
-
-// 背景渐变
-.bg-color-gradient {
-  background: $color-gradient;
-}
-.scrollbar-wrapper .el-scrollbar__wrap {
-  overflow-x: auto;
+.layout-container{
+  max-width: 1216px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
 }
 

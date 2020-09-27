@@ -7,10 +7,11 @@
     "declarations": true
   },
   "dependencies": {
-    "egg": "^2.15.1",
-    "egg-scripts": "^2.11.0",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
+    "crypto-js": "^4.0.0",
+    "egg": "^2.15.1",
+    "egg-scripts": "^2.11.0",
     "element-ui": "^2.12.0",
     "nprogress": "^0.2.0",
     "vue": "^2.6.10",

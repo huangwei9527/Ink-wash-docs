@@ -38,7 +38,7 @@
     position: absolute;
     bottom: 70%;
     left: 50%;
-    animation: run3 20s linear infinite 4s;
+    animation: run3 20s linear infinite 1s;
     z-index: 3;
   }
   @keyframes run1{

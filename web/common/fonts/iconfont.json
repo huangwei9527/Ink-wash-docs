@@ -6,6 +6,69 @@
   "description": "水墨文档",
   "glyphs": [
     {
+      "icon_id": "1311630",
+      "name": "讨论",
+      "font_class": "taolun",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "1376050",
+      "name": "回收站",
+      "font_class": "huishouzhan",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "4933342",
+      "name": "关注",
+      "font_class": "guanzhu",
+      "unicode": "e736",
+      "unicode_decimal": 59190
+    },
+    {
+      "icon_id": "6234420",
+      "name": "最近浏览",
+      "font_class": "zuijinliulan",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "9148975",
+      "name": "工作台",
+      "font_class": "weimingmingwenjianjia_gongzuotai",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "10469993",
+      "name": "关注",
+      "font_class": "gz",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "14902322",
+      "name": "文档",
+      "font_class": "ziyuan194",
+      "unicode": "e716",
+      "unicode_decimal": 59158
+    },
+    {
+      "icon_id": "2766438",
+      "name": "显示密码",
+      "font_class": "xianshimima",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "6406415",
+      "name": "隐藏密码",
+      "font_class": "yincangmima",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
       "icon_id": "854678",
       "name": "微信",
       "font_class": "z-weixin",
