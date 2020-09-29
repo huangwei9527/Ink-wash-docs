@@ -6,6 +6,55 @@
   "description": "水墨文档",
   "glyphs": [
     {
+      "icon_id": "583768",
+      "name": "办公软件 excel",
+      "font_class": "bangongruanjianexcel",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "955073",
+      "name": "文档",
+      "font_class": "wendang",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "2742675",
+      "name": "文件夹2",
+      "font_class": "wenjianjia",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "7629079",
+      "name": "文件夹",
+      "font_class": "wenjianjia1",
+      "unicode": "e6bf",
+      "unicode_decimal": 59071
+    },
+    {
+      "icon_id": "571725",
+      "name": "列表",
+      "font_class": "liebiao",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "4933286",
+      "name": "操作-排序-降序",
+      "font_class": "caozuo-paixu-jiangxu",
+      "unicode": "e712",
+      "unicode_decimal": 59154
+    },
+    {
+      "icon_id": "7069161",
+      "name": "列表",
+      "font_class": "liebiao1",
+      "unicode": "e739",
+      "unicode_decimal": 59193
+    },
+    {
       "icon_id": "1311630",
       "name": "讨论",
       "font_class": "taolun",

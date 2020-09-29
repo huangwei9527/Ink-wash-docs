@@ -29,7 +29,11 @@ export default new Router({
 		{
 			path: '/login',
 			name: 'Login',
-			component: () => import('@/pages/Login')
+			component: () => import('@/pages/Login'),
+			meta: {
+				noNeedLogin: true,
+				noHeader: true
+			}
 		}
 	]
 })

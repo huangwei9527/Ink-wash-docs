@@ -5,7 +5,9 @@ import {setLocalStorage, getLocalStorage} from '@/common/js/mUtils'
 const state = {
 	token: '',
 	permissionsList: [],
-	userInfo: {},
+	userInfo: {
+		name: '黄维围'
+	},
 }
 const actions = {
 

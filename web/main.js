@@ -8,6 +8,7 @@ import AES from '@/common/js/secret'
 import config from '@/config'
 import filters from './filters/index'
 import * as API from '@/api/index'
+import {Message} from 'element-ui'
 
 import '@/common/styles/element-variables.scss'
 import '@/common/styles/index.scss' // 自定义 css
@@ -19,6 +20,7 @@ Vue.prototype.$mUtils = mUtils;
 Vue.prototype.$AES = AES;
 Vue.prototype.$axios = httpServer;
 Vue.prototype.$api = API;
+Vue.prototype.$API = API;
 
 /**
  * 公共配置信息
@@ -31,6 +33,10 @@ Object.keys(filters).forEach(key => {
 })
 
 // 全局注册mixins
+
+
+Vue.use(Message);
+Vue.prototype.$message = Message
 
 
 String.prototype.replaceAll = function(s1, s2) {

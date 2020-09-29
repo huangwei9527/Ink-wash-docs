@@ -48,7 +48,7 @@
     height: 100%;
     background: #fafafa;
     .page-header-wrapper{
-      height: 50px;
+      height: 48px;
     }
     .page-main{
       flex: 1;

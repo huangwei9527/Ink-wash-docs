@@ -31,7 +31,7 @@
     flex: 1;
     padding-left: 8px;
     padding-right: 8px;
-    padding-top: 26px;
+    padding-top: 18px;
   }
 }
 </style>
