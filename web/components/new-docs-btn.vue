@@ -1,13 +1,13 @@
 <template>
   <div class="component-new-docs-btn">
-    <el-dropdown>
+    <el-dropdown @command="command">
       <el-button size="small" class="new-docs-btn" type="primary">
         新建 <i class="el-icon-upload el-icon-plus" />
       </el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>文档</el-dropdown-item>
-        <el-dropdown-item>表格</el-dropdown-item>
-        <el-dropdown-item>文件夹</el-dropdown-item>
+        <el-dropdown-item command="new-docs">文档</el-dropdown-item>
+        <el-dropdown-item command="new-excel">表格</el-dropdown-item>
+        <el-dropdown-item command="new-folder">文件夹</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -26,7 +26,12 @@
 			[Dropdown.name]: Dropdown,
 			[DropdownMenu.name]: DropdownMenu,
 			[DropdownItem.name]: DropdownItem
-		}
+    },
+    methods: {
+      command(type){
+        this.$emit('command', type)
+      }
+    }
 	}
 </script>
 

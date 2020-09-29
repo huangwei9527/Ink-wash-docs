@@ -1,7 +1,7 @@
 <template>
   <ul class="components-sort-icon-btn">
     <li class="active border-r">
-      <el-dropdown>
+      <el-dropdown @command="command">
         <el-tooltip content="排序" placement="top">
           <i class="iconfont icon-caozuo-paixu-jiangxu"></i>
         </el-tooltip>
@@ -54,20 +54,20 @@
 				type: 'thumbnail',
 				operationDataList: [{
 					title: '默认',
-					eventType: ''
+					eventType: 'default'
 				}, {
 					title: '更新时间',
-					eventType: ''
+					eventType: 'updateTime'
 				}, {
 					title: '创建时间',
-					eventType: '',
+					eventType: 'creatTime',
 					iconClass: ''
 				}, {
 					title: '文件名',
-					eventType: ''
+					eventType: 'folderName'
 				}, {
 					title: '文件夹置顶',
-					eventType: ''
+					eventType: 'folderTop'
 				}]
 			}
 		},
@@ -83,6 +83,10 @@
 			toggleType(type) {
 				this.type = type;
 				this.$emit('update:listType', this.type)
+			},
+			
+			command(type){
+				this.$emit('command', type)
 			}
 		},
 		watch: {

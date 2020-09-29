@@ -1,11 +1,6 @@
 <template>
   <div id="app">
-    <div class="page-header-wrapper">
-      <pageHeaader />
-    </div>
-    <div class="page-main">
-      <router-view class="sub-page"/>
-    </div>
+    <router-view class="sub-page"/>
     <div class="page-footer-wrapper">
       <pageFooter />
     </div>
@@ -35,27 +30,19 @@
     color: #2c3e50;
     position: relative;
     height: 100%;
+    background: #fafafa;
   }
 
   .sub-page {
     position: relative;
     height: 100%;
   }
-
-  #app{
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-    background: #fafafa;
-    .page-header-wrapper{
-      height: 48px;
-    }
-    .page-main{
-      flex: 1;
-    }
-    .page-footer-wrapper{
-      height: 20px;
-    }
+  .page-footer-wrapper{
+    position: fixed;
+    left: 0;
+    bottom: 8px;
+    width: 100%;
+    z-index: 100;
   }
 
 </style>

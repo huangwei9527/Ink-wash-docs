@@ -22,10 +22,6 @@
 					path: '/dashboard/work',
 					iconClassName: 'icon-weimingmingwenjianjia_gongzuotai'
 				}, {
-					name: '我的文档',
-					path: '',
-					iconClassName: 'icon-ziyuan194'
-				}, {
 					name: '我的讨论',
 					path: '',
 					iconClassName: 'icon-taolun'

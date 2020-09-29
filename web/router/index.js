@@ -27,6 +27,16 @@ export default new Router({
 			]
 		},
 		{
+			path: '/edit',
+			name: 'Edit',
+			component: () => import('@/pages/editor/index')
+		},
+		{
+			path: '/docs',
+			name: 'DocsView',
+			component: () => import('@/pages/docs-view/docs')
+		},
+		{
 			path: '/login',
 			name: 'Login',
 			component: () => import('@/pages/Login'),

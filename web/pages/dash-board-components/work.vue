@@ -2,9 +2,9 @@
   <div class="page-work">
     <!--头部-->
     <div class="dash-board-operator-wrapper">
-      <newDocsBtn/>
+      <newDocsBtn @command="newCommand" />
       <div class="pull-right">
-        <sortIconBtn :listType.sync="docsListType"/>
+        <sortIconBtn @command="sortCommand" :listType.sync="docsListType"/>
       </div>
     </div>
     <!--文档列表-->
@@ -51,6 +51,39 @@
 				this.$API.getDocsList(this.searchParams).then(res => {
 					this.docsList = res.body.data || [];
 				})
+			},
+			/**
+			 * 点击新增相关操作
+			 */
+			newCommand(command){
+				switch(command){
+					case 'new-docs':
+						this.newDocs();
+						break;
+					case 'new-excel':
+						this.newExcel();
+						break;
+					case 'new-folder':
+						this.newFolder();
+						break;
+				}
+			},
+			/**新增文档 */
+			newDocs(){
+				this.$router.push({name: 'Edit', query: {docsType: 'docs'}})
+			},
+			/**新增文档 */
+			newExcel(){
+				this.$message.info('开发者...')
+			},
+			/**新增文件夹 */
+			newFolder(){
+				this.$message.info('开发者...')
+			},
+			/**排序命令 */
+			sortCommand(sortType){
+				this.searchParams.orderBy = sortType || '';
+				this.getData();
 			}
 		}
 	}
