@@ -1,24 +1,28 @@
 <template>
   <div class="page page-login">
     <page-background class="login-background"/>
-
     <div class="login-page-inner">
       <p class="title">水墨知识文档库</p>
       <el-form :model="formData" :rules="formRules" ref="loginForm" label-width="0px">
         <el-form-item prop="username">
-          <el-input v-model="formData.username" placeholder="请输入用户名" @keyup.enter.native="doLogin">
+          <el-input v-model="formData.username" name="userName" placeholder="请输入用户名" @keyup.enter.native="doLogin">
             <i slot="prefix" class="iconfont icon-zhanghao"></i>
           </el-input>
         </el-form-item>
+        <el-form-item prop="email" v-if="type === 'register'">
+          <el-input v-model="formData.email" autocomplete="off" placeholder="请输入邮箱" @keyup.enter.native="doLogin">
+            <span slot="prefix" class="iconfont icon-mail-copy"></span>
+          </el-input>
+        </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="formData.password" placeholder="请输入密码" :type="inputType" @keyup.enter.native="doLogin"
+          <el-input v-model="formData.password" name="password" placeholder="请输入密码" :type="inputType" @keyup.enter.native="doLogin"
                     v-if="inputType==='password'">
             <i slot="prefix" class="iconfont icon-mima"></i>
             <span slot="suffix" class="cursor-pointer" @mousedown="mousedownPassword">
               <i class="iconfont icon-yincangmima"></i>
             </span>
           </el-input>
-          <el-input v-model="formData.password" placeholder="请输入密码" :type="inputType" @keyup.enter.native="doLogin"
+          <el-input v-model="formData.password" name="password" placeholder="请输入密码" :type="inputType" @keyup.enter.native="doLogin"
                     v-else>
             <i slot="prefix" class="iconfont icon-mima"></i>
             <span slot="suffix" class="cursor-pointer" @mousedown="mousedownText">
@@ -27,12 +31,15 @@
           </el-input>
         </el-form-item>
         <el-form-item>
-          <div class="btn-hover" @click="doLogin">登录</div>
+          <div class="btn-hover" @click="doSubmit">{{type === 'login' ? '登录' : '注册'}}</div>
         </el-form-item>
       </el-form>
-      <router-link to="/retrievePassword">
-        <p class="forgot-password">注册</p>
-      </router-link>
+      <div class="switch-do-type marginB20">
+        <p class="" @click="switchType">
+          <i class="iconfont icon-iconfontzhizuobiaozhun47"></i>
+          <span>{{type === 'login' ? '立即注册' : '马上登录'}}</span>
+        </p>
+      </div>
       <p class="login-page-bottom">Copyright © 2020 <span class="black">水墨文档版权所有</span></p>
     </div>
   </div>
@@ -58,7 +65,9 @@
 				loading: false,
 				loadingVerify: false,
 				inputType: 'password',
+				type: 'login',
 				formData: {
+					email: '',
 					username: '',
 					password: ''
 				},
@@ -80,23 +89,46 @@
 			/**
 			 登陆
 			 */
-			doLogin() {
+			doSubmit() {
 				// 验证成功
 				this.$refs.loginForm.validate((valid) => {
+					let fnName = this.type === 'login' ? 'doLogin' : 'doRegister'
 					if (valid) {
-						let formData = {...this.formData}
-						formData.password = this.$AES.Encrypt(formData.password)
-						// 登录操作
-						this.$api.login(formData).then(res => {
-							this.$store.commit('UPDATE_USER_TOKEN', res.body.token);
-							this.$router.push(this.fromUrl || '/dashboard')
-						})
+            this[fnName]();
 					} else {
 						this.$store.dispatch('showMassage', {type: 'error', message: '请正确填写表单！'})
 						return false;
 					}
 				});
 			},
+			doLogin() {
+				console.log('登录')
+				let formData = {...this.formData}
+				formData.password = this.$AES.Encrypt(formData.password)
+				// 登录操作
+				this.$api.login(formData).then(res => {
+					this.$store.commit('UPDATE_USER_TOKEN', res.body.token);
+					this.$router.push(this.fromUrl || '/dashboard')
+				})
+			},
+			doRegister() {
+				console.log('注册')
+				let formData = {...this.formData}
+				formData.password = this.$AES.Encrypt(formData.password)
+				// 登录操作
+				this.$api.login(formData).then(res => {
+					this.$store.commit('UPDATE_USER_TOKEN', res.body.token);
+					this.$router.push(this.fromUrl || '/dashboard')
+				})
+			},
+			switchType(){
+				if(this.type === 'login'){
+					this.type = 'register'
+				}else{
+					this.type = 'login'
+        }
+
+      },
 			mousedownPassword() {
 				this.inputType = 'text'
 			},
@@ -186,5 +218,21 @@
       color: #333;
     }
   }
-
+  .switch-do-type{
+    font-size: 14px;
+    text-underline: #000;
+    text-align: right;
+    color: #333;
+    cursor: pointer;
+    p{
+      display: inline-block;
+    }
+    i{
+      font-size: 16px;
+      font-weight: 600;
+    }
+    &:hover{
+      color: #000;
+    }
+  }
 </style>

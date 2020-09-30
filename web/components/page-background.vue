@@ -30,7 +30,7 @@
     position: absolute;
     bottom: 10%;
     left: 85%;
-    animation: run2 70s linear infinite 0s;
+    animation: run2 50s linear infinite 0s;
     z-index: 2;
   }
   .bg-2{
@@ -38,7 +38,7 @@
     position: absolute;
     bottom: 70%;
     left: 50%;
-    animation: run3 20s linear infinite 1s;
+    animation: run3 15s linear infinite 1s;
     z-index: 3;
   }
   @keyframes run1{
@@ -51,10 +51,16 @@
   }
   @keyframes run2{
     0%{
-      left:100%;
+      left:75%;
+    }
+    75%{
+      left: -16%
+    }
+    75.01%{
+      left: 100%;
     }
     100%{
-      left: -16%
+      left: 75%;
     }
   }
   @keyframes run3{

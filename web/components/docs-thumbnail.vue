@@ -1,17 +1,17 @@
 <template>
   <div class="components-docs-thumbnail" :class="{'is-list': isList}">
     <ul class="docs-thumbnail">
-      <li class="docs-thumbnail-image">
+      <li class="docs-thumbnail-image" @click="open">
         <img :src="getDocsIconImage(docsData.type)" alt="">
       </li>
-      <li class="docs-thumbnail-title">
+      <li class="docs-thumbnail-title" @click="open">
         <p :title="docsData.title">{{docsData.title}}</p>
       </li>
       <li class="docs-info-author show-list">{{docsData.author}}</li>
       <li class="docs-info-date show-list">{{docsData.updateDate}}</li>
       <!--操作按钮-->
       <li class="docs-info-operation-btn">
-        <el-dropdown>
+        <el-dropdown @command="command">
           <i class="font-p-color el-icon-setting"/>
           <el-dropdown-menu>
             <el-dropdown-item
@@ -31,6 +31,7 @@
 	let imgDoc = require('@/common/images/docs.png')
 	let imgExcel = require('@/common/images/excel.png')
 	let imgF = require('@/common/images/f.png')
+	import newFolder from '@/components/new-folder/index.js'
 	import {
 		Dropdown,
 		DropdownMenu,
@@ -56,7 +57,7 @@
 			return {
 				operationDataList: [{
 					title: '打开',
-					eventType: 'edit',
+					eventType: 'open',
 					iconClass: ''
 				}, {
 					title: '重命名',
@@ -64,15 +65,15 @@
 					iconClass: ''
 				}, {
 					title: '分享设置',
-					eventType: 'reName',
+					eventType: 'shareSetting',
 					iconClass: ''
 				}, {
 					title: '协作设置',
-					eventType: 'reName',
+					eventType: 'cooperation',
 					iconClass: ''
 				}, {
 					title: '删除',
-					eventType: 'reName',
+					eventType: 'delete',
 					iconClass: ''
 				}]
 			}
@@ -90,7 +91,41 @@
 					excel: imgExcel
 				}
 				return map[type] ? map[type] : imgDoc
-			}
+			},
+			/**
+       * 操作命令
+			 * @param type
+			 */
+			command(type){
+				switch(type) {
+					case 'open':
+						this.open();
+						break;
+					case 'reName':
+						this.reName();
+						break;
+					case 'shareSetting':
+						this.shareSetting();
+						break;
+					case 'cooperation':
+						this.cooperation();
+						break;
+					case 'delete':
+						this.delete();
+						break;
+				}
+			},
+			open(){
+        this.$router.push({name: 'DocsView', query: {id: this.docsData.id}})
+      },
+			reName(){
+				newFolder(this.docsData, res => {
+          this.docsData.title = res.title;
+        })
+      },
+			delete(){
+				this.$emit('refresh')
+      }
 		}
 	}
 </script>
@@ -112,7 +147,7 @@
       margin: 0 10px 15px;
       width: 122px;
       height: 137px;
-      border: 1px solid #eee;
+      /*border: 1px solid #eee;*/
       &:hover {
         border: 1px solid #e5e5e5;
         border-radius: 2px;

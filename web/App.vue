@@ -7,12 +7,9 @@
   </div>
 </template>
 <script>
-	import pageHeaader from '@/components/page-header'
 	import pageFooter from '@/components/page-footer'
-
 	export default {
 		components: {
-			pageHeaader,
 			pageFooter
 		}
 	}

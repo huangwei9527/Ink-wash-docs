@@ -1,13 +1,16 @@
 <template>
   <div class="components-page-header">
-    <div class="inline-block logo-wrapper">
-      <span>水墨文档</span>
-    </div>
-    <div class="header-center-wrapper">
-      <slot></slot>
-    </div>
-    <div class="user-wrapper">
-      <userHeadBtn />
+    <div class="page-header-inner layout-container">
+      <div class="inline-block logo-wrapper">
+        <img src="../common/images/logo.png" alt="">
+        <span>水墨文档</span>
+      </div>
+      <div class="header-center-wrapper">
+        <slot></slot>
+      </div>
+      <div class="user-wrapper">
+        <userHeadBtn />
+      </div>
     </div>
   </div>
 </template>
@@ -23,16 +26,27 @@
 
 <style lang="scss" scoped>
 .components-page-header{
-  display: flex;
   height: 100%;
   background: white;
   box-shadow: 0 2px 3px 0 rgba(100,100,100,0.06);
-  padding: 0 20px;
+}
+.page-header-inner{
+  display: flex;
 }
 .logo-wrapper{
-  width: 100px;
+  width: 160px;
   font-size: 18px;
   line-height: 48px;
+  img{
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    vertical-align: middle;
+  }
+  span{
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 .header-center-wrapper{
   flex: 1;

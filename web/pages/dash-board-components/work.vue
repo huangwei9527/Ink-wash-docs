@@ -10,7 +10,12 @@
     <!--文档列表-->
     <div class="docs-list-wrapper">
       <template v-for="(docs, index) in docsList">
-        <docsThumbnail :type="docs.type" :isList="docsListType === 'list'" :docsData="docs"  :key="index"/>
+        <docsThumbnail
+                :type="docs.type"
+                :isList="docsListType === 'list'"
+                :docsData="docs"
+                @refresh="getData"
+                :key="index"/>
       </template>
     </div>
   </div>
@@ -20,7 +25,7 @@
 	import newDocsBtn from '@/components/new-docs-btn'
 	import sortIconBtn from '@/components/sort-icon-btn'
 	import docsThumbnail from '@/components/docs-thumbnail'
-
+  import newFolder from '@/components/new-folder/index.js'
 	export default {
 		components: {
 			newDocsBtn,
@@ -78,7 +83,10 @@
 			},
 			/**新增文件夹 */
 			newFolder(){
-				this.$message.info('开发者...')
+				newFolder({}, () => {
+					// 刷新列表
+					this.getData();
+        })
 			},
 			/**排序命令 */
 			sortCommand(sortType){

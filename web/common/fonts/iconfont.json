@@ -6,6 +6,13 @@
   "description": "水墨文档",
   "glyphs": [
     {
+      "icon_id": "1012785",
+      "name": "手指示",
+      "font_class": "iconfontzhizuobiaozhun47",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
       "icon_id": "583768",
       "name": "办公软件 excel",
       "font_class": "bangongruanjianexcel",
