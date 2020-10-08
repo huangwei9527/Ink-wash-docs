@@ -8,7 +8,7 @@
       </div>
     </div>
     <!--文档列表-->
-    <div class="docs-list-wrapper">
+    <el-scrollbar class="docs-list-wrapper scroll-wrapper">
       <template v-for="(docs, index) in docsList">
         <docsThumbnail
                 :type="docs.type"
@@ -17,7 +17,7 @@
                 @refresh="getData"
                 :key="index"/>
       </template>
-    </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -25,9 +25,13 @@
 	import newDocsBtn from '@/components/new-docs-btn'
 	import sortIconBtn from '@/components/sort-icon-btn'
 	import docsThumbnail from '@/components/docs-thumbnail'
-  import newFolder from '@/components/new-folder/index.js'
+	import newFolder from '@/components/new-folder/index.js'
+	import {
+		Scrollbar
+	} from 'element-ui'  
 	export default {
 		components: {
+			[Scrollbar.name]: Scrollbar,
 			newDocsBtn,
 			sortIconBtn,
 			docsThumbnail
@@ -75,11 +79,11 @@
 			},
 			/**新增文档 */
 			newDocs(){
-				this.$router.push({name: 'Edit', query: {docsType: 'docs'}})
+				this.$router.push({name: 'Edit', query: {type: 'docs'}})
 			},
-			/**新增文档 */
+			/**新增excel */
 			newExcel(){
-				this.$message.info('开发者...')
+				this.$router.push({name: 'Edit', query: {type: 'excel'}})
 			},
 			/**新增文件夹 */
 			newFolder(){
@@ -98,7 +102,11 @@
 </script>
 
 <style lang="scss" scoped>
-.docs-list-wrapper{
-  padding: 20px 0;
+.page-work{
+  height: 100%;
+  .docs-list-wrapper{
+  	padding: 20px 0;
+	  height: calc(100% - 36px);
+  }
 }
 </style>

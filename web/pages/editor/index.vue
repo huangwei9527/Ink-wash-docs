@@ -18,20 +18,36 @@
             />
           </div>
           <div class="editor-header-operation text-right">
-            <el-button-group>
-                <el-button size="small" type="primary" icon="el-icon-position"></el-button>
-            </el-button-group>
+            <el-dropdown split-button size="mini" type="primary" @click="handleClick">
+                保存
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>存为模板</el-dropdown-item>
+                    <el-dropdown-item>编辑锁定</el-dropdown-item>
+                    <el-dropdown-item>
+                        <span class="red">删除</span>
+                    </el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
           </div>
       </div>
       <div class="editor-wrapper">
-          <docsEdit></docsEdit>  
+          <template v-if="editType === 'docs'">
+            <docsEdit />
+          </template> 
+          <template v-if="editType === 'excel'">
+            <excelEdit />
+          </template> 
       </div>
   </div>
 </template>
 
 <script>
 import docsEdit from "./components/docs-edit"
+import excelEdit from "./components/excel-edit"
 import {
+    Dropdown,
+    DropdownMenu,
+    DropdownItem,
     Button,
     ButtonGroup,
     Input
@@ -41,14 +57,22 @@ export default {
         [ButtonGroup.name]: ButtonGroup,
         [Button.name]: Button,
         [Input.name]: Input,
-        docsEdit
+        [Dropdown.name]: Dropdown,
+        [DropdownMenu.name]: DropdownMenu,
+        [DropdownItem.name]: DropdownItem,
+        docsEdit,
+        excelEdit
     },
     data(){
         return {
             docsData: {
+                editType: '',
                 title: ''
             }
         }
+    },
+    created(){
+        this.editType = this.$route.query.type
     },
     methods: {
         goBack(){

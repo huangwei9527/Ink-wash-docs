@@ -46,7 +46,8 @@
 </template>
 
 <script>
-	import pageBackground from '@/components/page-background'
+  import pageBackground from '@/components/page-background'
+  import userModel from '@/libs/userModel'
 	import {
 		Form,
 		FormItem,
@@ -107,7 +108,8 @@
 				formData.password = this.$AES.Encrypt(formData.password)
 				// 登录操作
 				this.$api.login(formData).then(res => {
-					this.$store.commit('UPDATE_USER_TOKEN', res.body.token);
+          userModel.getUserInfo()
+          this.$store.commit('UPDATE_USER_TOKEN', res.body.token);
 					this.$router.push(this.fromUrl || '/dashboard')
 				})
 			},

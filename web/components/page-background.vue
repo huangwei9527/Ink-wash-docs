@@ -1,8 +1,8 @@
 <template>
   <div class="components-page-background">
-    <img class="bg-0" src="../common/images/login-bg/0.png" alt="">
-    <img class="bg-1" src="../common/images/login-bg/1.png" alt="">
-    <img class="bg-2" src="../common/images/login-bg/2.png" alt="">
+    <img class="bg-0 not-select" src="../common/images/login-bg/0.png" alt="">
+    <img class="bg-1 not-select" src="../common/images/login-bg/1.png" alt="">
+    <img class="bg-2 not-select" src="../common/images/login-bg/2.png" alt="">
   </div>
 </template>
 
@@ -36,7 +36,7 @@
   .bg-2{
     width: 12%;
     position: absolute;
-    bottom: 70%;
+    bottom: 75%;
     left: 50%;
     animation: run3 15s linear infinite 1s;
     z-index: 3;
@@ -73,5 +73,12 @@
     100%{
       width: 12%
     }
+  }
+  .not-select{
+    -moz-user-select:none; /*火狐*/
+    -webkit-user-select:none; /*webkit浏览器*/
+    -ms-user-select:none; /*IE10*/
+    -khtml-user-select:none; /*早期浏览器*/
+    user-select:none;
   }
 </style>

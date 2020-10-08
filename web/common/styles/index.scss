@@ -37,12 +37,23 @@ a {
   text-decoration: none;
 }
 
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+}
+
 .icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+.not-select{
+  -moz-user-select:none; /*火狐*/
+  -webkit-user-select:none; /*webkit浏览器*/
+  -ms-user-select:none; /*IE10*/
+  -khtml-user-select:none; /*早期浏览器*/
+  user-select:none;
 }
 
 // box-sizing统一采用border-box
@@ -554,3 +565,14 @@ img {
   height: 100%;
 }
 
+
+.scroll-wrapper{
+  .el-scrollbar__wrap{
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  &.el-scrollbar{
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}

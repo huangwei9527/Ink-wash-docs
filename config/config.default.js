@@ -23,8 +23,20 @@ module.exports = appInfo => {
     // myAppName: 'egg',
   };
 
+  // mongdb 配置
+  config.mongoose = {
+    url: 'mongodb://172.0.0.1:27017/inkwash',
+    options: {},
+  };
+
   return {
     ...config,
     ...userConfig,
+    mongoose: {
+      client: {
+        url:'mongodb://admin:123456@localhost:27017/test',
+        options: {}
+      }
+    }
   };
 };

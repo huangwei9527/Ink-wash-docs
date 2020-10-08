@@ -79,3 +79,19 @@ export const Cookie = {
 	}
 };
 
+
+/**
+ * @auth huangwei
+ * @param {String} text 需要复制的内容
+ * @return {Boolean} 复制成功:true或者复制失败:false  执行完函数后，按ctrl + v试试
+*/
+export  const copyText = function(text) {
+    var textareaEl = document.createElement('textarea');
+    textareaEl.setAttribute('readonly', 'readonly'); // 防止手机上弹出软键盘
+    textareaEl.value = text;
+    document.body.appendChild(textareaEl);
+    textareaEl.select();
+    var res = document.execCommand('copy');
+    document.body.removeChild(textareaEl);
+    return res;
+}

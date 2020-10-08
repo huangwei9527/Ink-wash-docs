@@ -3,17 +3,22 @@
     <el-dropdown>
       <div class="inline-block">
         <div class="user-head-btn-img">
-          <img :src="userData.head || userHeadImage" alt="">
+          <img :src="userData.avatar || userHeadImage" alt="">
         </div>
         <span class="user-head-btn-name">{{userData.name}}</span>
       </div>
       <el-dropdown-menu>
-        <el-dropdown-item command="new-excel">
+        <el-dropdown-item>
+          <userInfo :userData="userData" :showEdit="true">
+            <i class="el-icon-user"></i> 个人资料
+          </userInfo>
+        </el-dropdown-item>
+        <el-dropdown-item>
           <resetPassword>
             <i class="el-icon-edit"></i> 修改密码
           </resetPassword>
         </el-dropdown-item>
-        <el-dropdown-item command="new-folder">
+        <el-dropdown-item>
           <div @click="doLogout">
             <i class="el-icon-switch-button"></i> 退出登录
           </div>
@@ -29,7 +34,8 @@
 		DropdownMenu,
 		DropdownItem,
 	} from 'element-ui'
-	import resetPassword from '@/components/reset-password'
+  import resetPassword from '@/components/reset-password'
+  import userInfo from '@/components/user-info'
 
 	export default {
 		name: "user-head-btn",
@@ -37,11 +43,12 @@
 			[Dropdown.name]: Dropdown,
 			[DropdownMenu.name]: DropdownMenu,
 			[DropdownItem.name]: DropdownItem,
-			resetPassword
+      resetPassword,
+      userInfo
 		},
 		data() {
 			return {
-				userHeadImage: require('./headerImage.png')
+				userHeadImage: require('@/common/images/headerImage.png')
 			}
 		},
 		computed: {
@@ -68,6 +75,8 @@
       vertical-align: middle;
       width: 28px;
       height: 28px;
+      border-radius: 50%;
+      overflow: hidden;
     }
     .user-head-btn-name {
       font-size: 14px;

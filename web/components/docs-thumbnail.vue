@@ -64,6 +64,10 @@
 					eventType: 'reName',
 					iconClass: ''
 				}, {
+					title: '复制链接',
+					eventType: 'copyUrl',
+					iconClass: ''
+				}, {
 					title: '分享设置',
 					eventType: 'shareSetting',
 					iconClass: ''
@@ -113,6 +117,9 @@
 					case 'delete':
 						this.delete();
 						break;
+					case 'copyUrl':
+						this.copyUrl();
+						break;
 				}
 			},
 			open(){
@@ -125,6 +132,10 @@
       },
 			delete(){
 				this.$emit('refresh')
+      },
+			copyUrl(){
+        this.$mUtils.copyText(this.docsData.url);
+        this.$message.info('已复制到剪切板');
       }
 		}
 	}

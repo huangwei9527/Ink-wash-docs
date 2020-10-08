@@ -63,6 +63,7 @@ export default {
             trigger: "blur"
           },
           {
+            required: true,
             pattern: /^[A-Za-z0-9]\w{5,15}$/,
             message: "输入6-16位数字或字母，不可输入特殊字符",
             trigger: "blur"
@@ -74,13 +75,14 @@ export default {
             trigger: "blur"
           },
           {
+            required: true,
             pattern: /^[A-Za-z0-9]\w{5,15}$/,
             message: "输入6-16位数字或字母，不可输入特殊字符",
             trigger: "blur"
           }
         ],
         newPassword: [
-          { validator: validatePass2, trigger: 'blur' }
+          { required: true,validator: validatePass2, trigger: 'blur' }
         ]
       }
     };

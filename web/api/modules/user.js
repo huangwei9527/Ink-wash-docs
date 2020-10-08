@@ -10,6 +10,6 @@ export const login = p => $axios.post('http://yapi.newhope.cn/mock/398/inkwash/a
 export const register = p => $axios.post('http://yapi.newhope.cn/mock/398/inkwash/auth/register', p);
 
 // 获取用户信息
-export const getUserInfo = () => $axios.post('http://yapi.newhope.cn/mock/398/inkwash/user/info');
+export const getUserInfo = () => $axios.get('http://yapi.newhope.cn/mock/398/inkwash/user/info');
 
 //

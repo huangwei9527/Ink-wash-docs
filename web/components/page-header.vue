@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import userHeadBtn from '@/components/user-head-btn/index'
+  import userHeadBtn from '@/components/user-head-btn'
 	export default {
 		components: {
 			userHeadBtn
