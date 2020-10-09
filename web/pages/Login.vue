@@ -103,23 +103,18 @@
 				});
 			},
 			doLogin() {
-				console.log('登录')
 				let formData = {...this.formData}
 				formData.password = this.$AES.Encrypt(formData.password)
 				// 登录操作
-				this.$api.login(formData).then(res => {
-          userModel.getUserInfo()
-          this.$store.commit('UPDATE_USER_TOKEN', res.body.token);
+				userModel.doLogin(formData).then(() => {
 					this.$router.push(this.fromUrl || '/dashboard')
 				})
 			},
 			doRegister() {
-				console.log('注册')
 				let formData = {...this.formData}
 				formData.password = this.$AES.Encrypt(formData.password)
 				// 登录操作
-				this.$api.login(formData).then(res => {
-					this.$store.commit('UPDATE_USER_TOKEN', res.body.token);
+				userModel.doRegister(formData).then(() => {
 					this.$router.push(this.fromUrl || '/dashboard')
 				})
 			},
@@ -129,7 +124,6 @@
 				}else{
 					this.type = 'login'
         }
-
       },
 			mousedownPassword() {
 				this.inputType = 'text'

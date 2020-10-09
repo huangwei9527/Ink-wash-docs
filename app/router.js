@@ -6,7 +6,7 @@
 module.exports = app => {
   const { router, controller } = app;
   // auth
-	router.get('/auth/login', controller.auth.login);
-  router.get('/auth/register', controller.auth.register);
-  // router.get('/user/newUser', controller.user.newUser)
+	router.get('/inkwash/auth/login', controller.auth.login);
+  router.post('/inkwash/auth/register', controller.auth.register);
+  router.get('/inkwash/user/info', controller.user.getUserInfo)
 };

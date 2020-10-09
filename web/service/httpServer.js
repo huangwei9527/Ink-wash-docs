@@ -2,12 +2,9 @@ import axios from 'axios'
 import store from '@/store/index'
 import $config from "@/config/index";
 import QS from 'qs';
-import { Loading } from 'element-ui';
-
-let loadinginstace;
 
 // 线上环境配置axios.defaults.baseURL，生产环境则用proxy代理
-if (process.env.VUE_APP_ENV_NAME !== 'development') {
+if (process.env.NODE_ENV !== 'development') {
   axios.defaults.baseURL = $config.baseURL;
 }
 axios.defaults.headers['Content-Type'] = 'application/json;charse=UTF-8'

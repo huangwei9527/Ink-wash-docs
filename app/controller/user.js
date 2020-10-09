@@ -3,9 +3,14 @@
 const Controller = require('egg').Controller;
 
 class UserController extends Controller {
-  async newUser() {
-    this.ctx.body = this.ctx.service.user.newUser();
-  }
+	/**
+	 * 获取个人信息
+	 * @returns {Promise<void>}
+	 */
+	async getUserInfo() {
+		const { ctx } = this;
+		ctx.returnBody(true, {})
+	}
 }
 
 module.exports = UserController;

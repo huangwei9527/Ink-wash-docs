@@ -3,7 +3,7 @@
  */
 import {setLocalStorage, getLocalStorage} from '@/common/js/mUtils'
 const state = {
-	token: '',
+	access_token: '',
 	permissionsList: [],
 	userInfo: {},
 }
@@ -23,7 +23,7 @@ const mutations = {
 	/**
 	 * 更新oauth相关
 	 */
-	UPDATE_USER_TOKEN(state, data) {
+	UPDATE_ACCESS_TOKEN(state, data) {
 		state.token = data || ''
 		// 存储状态
 		mutations['SAVE_USER_TO_LOCAL'](state)
