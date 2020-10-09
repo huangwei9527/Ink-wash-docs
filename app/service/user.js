@@ -111,6 +111,34 @@ class UserService extends Service {
 		const {ctx} = this;
 		return ctx.model.User.find(query, '', opt).select(selectUserKey).exec();
 	}
+
+	/**
+	 * 更新个人头像
+	 * @param {*} url 
+	 */
+	updateUserAvatar(url){
+		const {ctx} = this;
+		await ctx.model.User.findByIdAndUpdate(this.user._id, {$set: {avatar: url}});
+		return ctx.model.User.findOne({ _id: this.user._id }).select(selectUserKey).exec();
+	}
+	/**
+	 * 更新用户昵称
+	 * @param {*} name 
+	 */
+	updateUserName(name){
+		const {ctx} = this;
+		await ctx.model.User.findByIdAndUpdate(this.user._id, {$set: {name: name}});
+		return ctx.model.User.findOne({ _id: this.user._id }).select(selectUserKey).exec();
+	}
+	/**
+	 * 更新个人密码
+	 * @param {*} newPass 
+	 */
+	updateUserPass(newPass){
+		const {ctx} = this;
+		await ctx.model.User.findByIdAndUpdate(this.user._id, {$set: {password: newPass}});
+		return ctx.model.User.findOne({ _id: this.user._id }).select(selectUserKey).exec();
+	}
 }
 
 module.exports = UserService;

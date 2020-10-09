@@ -8,8 +8,7 @@ class UserController extends Controller {
 	 * @returns {Promise<void>}
 	 */
 	async getUserInfo() {
-		const { ctx } = this;
-		ctx.returnBody(true, {})
+		ctx.returnBody(true, this.user)
 	}
 }
 
