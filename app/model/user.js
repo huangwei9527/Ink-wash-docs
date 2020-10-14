@@ -34,6 +34,11 @@ module.exports = app => {
 			enum: ['site', 'third'],
 			default: 'site'
 		},
+		// 被点赞数统计
+		star_count: {type: Number, default: 0},
+		// 文章被阅读统计
+		be_read_count: {type: Number, default: 0},
+		history_visit_doc: [{type: String}],
 	}, {timestamps: {createdAt: 'created', updatedAt: 'updated'}});
 	return mongoose.model('User', UserSchema);
 };

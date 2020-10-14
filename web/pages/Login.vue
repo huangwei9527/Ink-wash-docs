@@ -104,7 +104,6 @@
 			},
 			doLogin() {
 				let formData = {...this.formData}
-				formData.password = this.$AES.Encrypt(formData.password)
 				// 登录操作
 				userModel.doLogin(formData).then(() => {
 					this.$router.push(this.fromUrl || '/dashboard')
@@ -112,7 +111,6 @@
 			},
 			doRegister() {
 				let formData = {...this.formData}
-				formData.password = this.$AES.Encrypt(formData.password)
 				// 登录操作
 				userModel.doRegister(formData).then(() => {
 					this.$router.push(this.fromUrl || '/dashboard')

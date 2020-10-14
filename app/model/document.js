@@ -5,6 +5,10 @@ module.exports = app => {
 	const Schema = mongoose.Schema;
 
 	const DocumentSchema = new Schema({
+		parentId: {
+			type: String,
+			default: '0'
+		},
 		title: {
 			type: String,
 			required: [true, '标题不能为空'],
@@ -13,28 +17,47 @@ module.exports = app => {
 		},
 		content: {
 			type: String
-        },
-        type: { // md: markdown文档
+		},
+		type: { // md: markdown文档
 			type: String,
 			default: 'md'
 		},
 		author: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'user'
-        },
-        //  发布状态
+			type: String,
+			ref: "User"
+		},
+		//  发布状态
 		isPublish: {
-            type: Boolean, 
-            default: true 
-        }, 
-	    isTemplate: {
-            type: Boolean, 
-            default: false 
-        },
-        // 共享人员列表
-        members: [
-            mongoose.Schema.Types.ObjectId
-        ],
+			type: Boolean,
+			default: true
+		},
+		isTemplate: {
+			type: Boolean,
+			default: false
+		},
+		visit_count: {
+			type: Number,
+			default: 1
+		},
+		star_user: [{
+			type: String
+		}],
+		collection_user: [{
+			type: String
+		}],
+		// 协作人员
+		cooperation_user: [{
+			type: String
+		}],
+		// 授权用户
+		members: [{
+			type: String
+		}],
+		// 是否已删除
+		is_delete: {
+			type: Boolean,
+			default: false
+		},
 	}, {timestamps: {createdAt: 'created', updatedAt: 'updated'}});
 	return mongoose.model('Document', DocumentSchema);
 };

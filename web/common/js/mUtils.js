@@ -95,3 +95,81 @@ export  const copyText = function(text) {
     document.body.removeChild(textareaEl);
     return res;
 }
+
+
+/**
+ * 重新排序
+ * */
+export  const sortFn = function(list, type) {
+	let l = list;
+	if (type === 'name') {
+		l = list.sort((a, b) => {
+			return a.title < b.title ? 1 : -1
+		})
+	}else if (type === 'updateTime') {
+		l = list.sort((a, b) => {
+			return (+new Date(a.updated)) < (+new Date(b.updated)) ? 1 : -1
+		})
+	}else if (type === 'createTime') {
+		l = list.sort((a, b) => {
+			return (+new Date(a.created)) < (+new Date(b.created)) ? 1 : -1
+		})
+	}
+	return l;
+}
+export  const resort = function(documentData = [], sortType, isFolderTop) {
+	let folderList = documentData.filter(v => {
+		return v.type === 'folder'
+	})
+	let docsList = documentData.filter(v => {
+		return v.type !== 'folder'
+	})
+	let resolveList = [];
+	if (!isFolderTop) {
+		resolveList = this.sortFn(documentData, sortType)
+	}else{
+		resolveList = [
+			...(this.sortFn(folderList, sortType)),
+			...(this.sortFn(docsList, sortType))
+		]
+	}
+	return [...resolveList]
+}
+
+
+export const getQueryStringArgs = function() {
+	//取得查询字符串并去掉开头的问号
+	var qs = (location.search.length > 0 ? location.search.substring(1) : ""),
+
+		//保存数据的对象
+		args = {},
+
+		//取得每一项
+		items = qs.length ? qs.split("&") : [],
+		item = null,
+		name = null,
+		value = null,
+		//在 for 循环中使用
+		i = 0,
+		len = items.length;
+	//逐个将每一项添加到 args 对象中
+	for (i = 0; i < len; i++) {
+		item = items[i].split("=");
+		name = decodeURIComponent(item[0]);
+		value = decodeURIComponent(item[1]);
+		if (name.length) {
+			args[name] = value;
+		}
+	}
+
+	return args;
+}
+
+export const makeQuery =function(queryObject) {
+	const query = Object.entries(queryObject)
+		.reduce((result, entry) => {
+			result.push(entry.join('='))
+			return result
+		}, []).join('&')
+	return `?${query}`
+}

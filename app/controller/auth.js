@@ -2,7 +2,7 @@
 
 const Controller = require('egg').Controller;
 
-class HomeController extends Controller {
+class AuthController extends Controller {
 	/**
 	 * 登录
 	 * @returns {Promise<void>}
@@ -54,7 +54,7 @@ class HomeController extends Controller {
 		const users = await service.user.getUsersByQuery({ $or: [
 				{ username },
 				{ email },
-			] }, {});
+			] });
 
 		if (users.length > 0) {
 			ctx.returnBody(false, {}, "用户名或邮箱已被注册!")
@@ -70,4 +70,4 @@ class HomeController extends Controller {
 	}
 }
 
-module.exports = HomeController;
+module.exports = AuthController;

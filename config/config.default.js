@@ -2,6 +2,7 @@
 
 'use strict';
 
+const path = require('path')
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -21,7 +22,7 @@ module.exports = appInfo => {
   };
 
 	// add your middleware config here
-	config.middleware = [ 'errorHandler' ];
+	config.middleware = [ 'errorHandler'];
 
 
 	// 统一错误信息配置（注：match和ignore不可以同时配置）
@@ -35,20 +36,25 @@ module.exports = appInfo => {
 		secret: 'Z#fOGf$te4^J28l1Z&$#fXCNifv!ZHQnEG'
 	};
 
-	// cookie name config
-	config.auth_cookie_name = 'token';
-
   // mongdb 配置
   config.mongoose = {
     url: 'mongodb://localhost:27017/inkwash',
     options: {},
   };
 
+  // 关掉csrf
 	config.security = {
 		csrf: {
 			enable: false,
 		},
 	};
+
+	// 上传文件file读取方式
+	config.multipart = {
+		mode: 'file'
+	};
+
+
 
   return {
     ...config,

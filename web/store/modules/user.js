@@ -24,7 +24,7 @@ const mutations = {
 	 * 更新oauth相关
 	 */
 	UPDATE_ACCESS_TOKEN(state, data) {
-		state.token = data || ''
+		state.access_token = data || ''
 		// 存储状态
 		mutations['SAVE_USER_TO_LOCAL'](state)
 	},
@@ -63,7 +63,7 @@ const mutations = {
 
 const getters = {
 	authorization(state) {
-		return state.token ? 'Bearer ' + state.token : ''
+		return state.access_token ? 'Bearer ' + state.access_token : ''
 	},
 	userInfo(state) {
 		return state.userInfo

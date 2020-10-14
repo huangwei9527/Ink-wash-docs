@@ -77,6 +77,11 @@
       height: 28px;
       border-radius: 50%;
       overflow: hidden;
+      img{
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+      }
     }
     .user-head-btn-name {
       font-size: 14px;

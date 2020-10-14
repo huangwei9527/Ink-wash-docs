@@ -6,6 +6,41 @@
   "description": "水墨文档",
   "glyphs": [
     {
+      "icon_id": "1604932",
+      "name": "更多",
+      "font_class": "weibiaoti5",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "8817464",
+      "name": "收藏",
+      "font_class": "shoucang",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "15859110",
+      "name": "点赞",
+      "font_class": "dianzan1",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "579286",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "2339884",
+      "name": "ico_阅读量",
+      "font_class": "ico_yueduliang",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
       "icon_id": "1012785",
       "name": "手指示",
       "font_class": "iconfontzhizuobiaozhun47",

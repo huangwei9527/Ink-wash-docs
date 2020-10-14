@@ -31,14 +31,13 @@
 				id: '',
 				title: '',
 				parentId: '',
-				type: 'floder',
 				visible: false,
 				callback: null
 			}
 		},
 		methods: {
 			confirmFun() {
-				let fnName = this.id ? 'newFolder' : 'reName';
+				let fnName = this.id ? 'reName' : 'newFolder';
 				this[fnName]().then(res => {
 					if (this.callback) {
 						this.callback(res.body)
@@ -50,7 +49,7 @@
 				return this.$API.newFolder({title: this.title, parentId: this.parentId})
 			},
 			reName() {
-				return this.$API.newFolder({title: this.title, id: this.id, parentId: this.parentId})
+				return this.$API.documentRename({title: this.title, id: this.id})
 			},
 
 		}

@@ -22,24 +22,28 @@
 					path: '/dashboard/work',
 					iconClassName: 'icon-weimingmingwenjianjia_gongzuotai'
 				}, {
-					name: '我的讨论',
-					path: '',
-					iconClassName: 'icon-taolun'
+					name: '我的文档',
+					path: '/dashboard/document',
+					iconClassName: 'icon-ziyuan194'
 				}, {
-					name: '我的关注',
-					path: '',
-					iconClassName: 'icon-gz'
+					name: '协作编辑',
+					path: '/dashboard/cooperation',
+					iconClassName: 'icon-zuzhi'
+				}, {
+					name: '我的团队',
+					path: '/dashboard/group',
+					iconClassName: 'icon-yonghushu'
 				}, {
 					name: '我的收藏',
-					path: '',
+					path: '/dashboard/collection',
 					iconClassName: 'icon-guanzhu'
 				}, {
 					name: '最近浏览',
-					path: '',
+					path: '/dashboard/history',
 					iconClassName: 'icon-zuijinliulan'
 				}, {
 					name: '回收站',
-					path: '',
+					path: '/dashboard/recycle-bin',
 					iconClassName: 'icon-huishouzhan'
 				}]
 			}

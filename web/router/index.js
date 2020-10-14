@@ -23,6 +23,36 @@ export default new Router({
 					path: 'work',
 					name: 'DashBoardWork',
 					component: () => import('@/pages/dash-board-components/work')
+				},
+				{
+					path: 'collection',
+					name: 'DashBoardCollection',
+					component: () => import('@/pages/dash-board-components/my-collection')
+				},
+				{
+					path: 'document',
+					name: 'DashBoardDocument',
+					component: () => import('@/pages/dash-board-components/my-document')
+				},
+				{
+					path: 'cooperation',
+					name: 'DashBoardCooperation',
+					component: () => import('@/pages/dash-board-components/my-cooperation')
+				},
+				{
+					path: 'history',
+					name: 'DashBoardVisitHistory',
+					component: () => import('@/pages/dash-board-components/visit-history')
+				},
+				{
+					path: 'recycle-bin',
+					name: 'DashBoardRecycleBin',
+					component: () => import('@/pages/dash-board-components/recycle-bin')
+				},
+				{
+					path: 'group',
+					name: 'DashBoardGroup',
+					component: () => import('@/pages/dash-board-components/user-group')
 				}
 			]
 		},
@@ -34,7 +64,7 @@ export default new Router({
 		{
 			path: '/docs',
 			name: 'DocsView',
-			component: () => import('@/pages/docs-view/docs')
+			component: () => import('@/pages/docs-view/index')
 		},
 		{
 			path: '/login',

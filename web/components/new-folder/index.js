@@ -14,8 +14,8 @@ let Component =  function(opt, callback) {
 	opt = opt || {};
 	instance = new ComponentConstructor({
 		data: {
-			id: opt.id || '',
-			name: opt.title || '',
+			id: opt._id || '',
+			title: opt.title || '',
 			parentId: opt.parentId || '',
 		}
 	});

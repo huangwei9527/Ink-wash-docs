@@ -2,15 +2,19 @@
   <div id="app">
     <router-view class="sub-page"/>
     <div class="page-footer-wrapper">
-      <pageFooter />
+      <pageFooter/>
     </div>
   </div>
 </template>
 <script>
 	import pageFooter from '@/components/page-footer'
+
 	export default {
 		components: {
 			pageFooter
+		},
+		created() {
+			this.$store.commit('UPDATE_USER_FROM_LOCAL')
 		}
 	}
 </script>
@@ -34,7 +38,8 @@
     position: relative;
     height: 100%;
   }
-  .page-footer-wrapper{
+
+  .page-footer-wrapper {
     position: fixed;
     left: 0;
     bottom: 8px;

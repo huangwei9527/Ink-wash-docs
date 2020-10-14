@@ -10,17 +10,29 @@
                   v-for="(item, index) in operationDataList"
                   :key="index"
                   :command="item.eventType"
-          >{{item.title}}
+                  class="sort-icon-btn-item"
+                  :class="{active: item.eventType === sortType}"
+          >
+            <span class="sort-icon-btn-item-check-icon">
+              <i v-show="item.eventType === sortType" class="check-icon el-icon-check"></i>
+            </span>
+            {{item.title}}
+          </el-dropdown-item>
+          <el-dropdown-item command="folderTop" class="sort-icon-btn-item" :class="{active: isFolderTop}">
+            <span class="sort-icon-btn-item-check-icon">
+              <i v-show="isFolderTop" class="check-icon el-icon-check"></i>
+            </span>
+            文件夹置顶
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </li>
-    <li :class="{active: listType === 'thumbnail'}" @click="toggleType('thumbnail')">
+    <li :class="{active: docShowType === 'thumbnail'}" @click="toggleType('thumbnail')">
       <el-tooltip content="平铺" placement="top">
         <i class="iconfont icon-liebiao"></i>
       </el-tooltip>
     </li>
-    <li :class="{active: listType === 'list'}" @click="toggleType('list')">
+    <li :class="{active: docShowType === 'list'}" @click="toggleType('list')">
       <el-tooltip content="列表" placement="top">
         <i class="iconfont icon-liebiao1"></i>
       </el-tooltip>
@@ -29,20 +41,15 @@
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	import {
 		Dropdown,
 		DropdownMenu,
 		DropdownItem,
 		Tooltip
 	} from 'element-ui'
+
 	export default {
-		name: "sort-icon-btn",
-		props: {
-			listType: {
-				type: String,
-				default: 'thumbnail' // 默认缩略图模式（thumbnail） 可以切换列表模式（list）
-			}
-		},
 		components: {
 			[Tooltip.name]: Tooltip,
 			[Dropdown.name]: Dropdown,
@@ -51,7 +58,6 @@
 		},
 		data() {
 			return {
-				type: 'thumbnail',
 				operationDataList: [{
 					title: '默认',
 					eventType: 'default'
@@ -60,40 +66,41 @@
 					eventType: 'updateTime'
 				}, {
 					title: '创建时间',
-					eventType: 'creatTime',
+					eventType: 'createTime',
 					iconClass: ''
 				}, {
 					title: '文件名',
-					eventType: 'folderName'
-				}, {
-					title: '文件夹置顶',
-					eventType: 'folderTop'
+					eventType: 'name'
 				}]
 			}
 		},
-		created() {
-			this.type = this.listType;
+		computed: {
+			...mapState({
+				sortType: state => state.sortType,
+				docShowType: state => state.docShowType,
+				isFolderTop: state => state.isFolderTop,
+			})
 		},
-		computed: {},
 		methods: {
 			/**
 			 * 切换列表tyoe
 			 * @param type
 			 */
 			toggleType(type) {
-				this.type = type;
-				this.$emit('update:listType', this.type)
+				this.$store.commit('UPDATE_DOC_SHOW_TYPE', type)
 			},
-			
-			command(type){
-				this.$emit('command', type)
+
+			command(type) {
+				if(type === 'folderTop'){
+					this.$store.commit('UPDATE_IS_FOLDER_TOP', !this.isFolderTop)
+					this.$emit('updateSort')
+          return;
+        }
+
+				this.$store.commit('UPDATE_SORT_TYPE', type)
+				this.$emit('updateSort')
 			}
-		},
-		watch: {
-			listType(n) {
-				this.type = n;
-			}
-		},
+		}
 	}
 </script>
 
@@ -105,12 +112,16 @@
       cursor: pointer;
       color: #ccc;
       font-size: 20px;
-      &.active{
+      &.active {
         color: #555;
       }
     }
     li + li {
       margin-left: 10px;
     }
+  }
+  .sort-icon-btn-item-check-icon{
+    display: inline-block;
+    width: 16px;
   }
 </style>

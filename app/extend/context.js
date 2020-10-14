@@ -1,4 +1,3 @@
-
 // 扩展一些框架便利的方法
 module.exports = {
 	/**
@@ -8,7 +7,7 @@ module.exports = {
 	 * @param msg // 返回信息提示
 	 * @param code // 返回状态码
 	 */
-	returnBody (status = true, body = {}, msg = '接口请求已处理', code = 200) {
+	returnBody (status = true, body = {}, msg = 'success', code = 200) {
 		this.status = code;
 		this.body = {
 			status: status,
@@ -19,10 +18,22 @@ module.exports = {
 	},
 	// 生成token
 	async getToken(data) {
-		return this.app.jwt.sign(data, this.app.config.jwt.secret, {expiresIn: '1h'});
+		return this.app.jwt.sign(data, this.app.config.jwt.secret, {expiresIn: '6000s'});
 	},
-	//验证token
+	// 验证token
 	async checkToken(token) {
 		return this.app.jwt.verify(token, this.app.config.jwt.secret)
+	},
+	// 获取用户信息
+	async getUserData() {
+		var token = this.headers.authorization ? this.headers.authorization : '';
+		token = token.substring(7) //把Bearer 截取掉，解析的时候不需要加上Bearer
+		let user = null
+		try {
+			user = this.app.jwt.verify(token, this.app.config.jwt.secret);
+		} catch (err) {
+			user = null
+		}
+		return user;
 	}
 }

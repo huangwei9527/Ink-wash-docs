@@ -1,13 +1,12 @@
 <template>
   <div class="component-new-docs-btn">
     <el-dropdown @command="command">
-      <el-button size="small" class="new-docs-btn" type="primary">
-        新建 <i class="el-icon-upload el-icon-plus" />
-      </el-button>
+      <el-button size="mini" class="new-docs-btn"  icon="el-icon-plus">新建</el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="new-docs">文档</el-dropdown-item>
-        <el-dropdown-item command="new-excel">表格</el-dropdown-item>
+        <el-dropdown-item command="new-sheet">表格</el-dropdown-item>
         <el-dropdown-item command="new-folder">文件夹</el-dropdown-item>
+        <el-dropdown-item command="new-axure">原型图托管</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -39,7 +38,7 @@
 .component-new-docs-btn{
   display: inline-block;
   .new-docs-btn{
-    width: 120px;
+    /*width: 120px;*/
   }
 }
 </style>
