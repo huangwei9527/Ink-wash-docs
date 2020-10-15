@@ -1,6 +1,7 @@
 const Service = require('egg').Service;
 const  fs = require('fs')
 const path = require('path')
+const extract = require('extract-zip')
 
 class FileService extends Service {
 	/**
@@ -10,7 +11,6 @@ class FileService extends Service {
 	 * @returns {Promise<{fileName: *, url: string}>}
 	 */
 	async upload(file, folderName) {
-		console.log(folderName)
 		let {ctx} = this;
 		// 读取文件
 		let fileData = fs.readFileSync(file.filepath)
@@ -24,7 +24,29 @@ class FileService extends Service {
 		// 返回文件信息
 		return {
 			fileName: file.filename,
-			url: `/public/resource/${folderName ? folderName + '/' : ''}${file.filename}`
+			url:ctx.app.config.BASE_URL + `/public/resource/${folderName ? folderName + '/' : ''}${file.filename}`
+		}
+	}
+	/***
+	 * 解压操作
+	 * @param file
+	 * @param folderName
+	 */
+	async unZip(file, folderName){
+		let {ctx} = this;
+		// 将文件存到指定位置
+		let folderPath = path.join(path.join(__dirname, '../public/resource/'), folderName) // 拼接文件夹
+		// 判断文件夹是否存在不存在则新建一个
+		await ctx.helper.dirExists(folderPath);
+
+		try {
+			await extract(file.filepath, { dir: folderPath })
+			return {
+				fileName: file.filename,
+				url: ctx.app.config.BASE_URL + `/public/resource/${folderName ? folderName + '/' : ''}`
+			}
+		} catch (err) {
+			throw new Error(err);
 		}
 	}
 }

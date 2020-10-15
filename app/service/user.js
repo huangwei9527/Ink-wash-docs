@@ -95,6 +95,7 @@ class UserService extends Service {
    */
 	async getUsersByIds(ids) {
 		const {ctx} = this;
+		console.log('ids: ', ids);
 		return ctx.model.User.find({ _id: { $in: ids } }, selectUserKey).exec();
 	}
 

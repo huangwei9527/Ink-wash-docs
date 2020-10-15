@@ -153,6 +153,9 @@
 					case 'new-folder':
 						this.newFolder();
 						break;
+					case 'new-axure':
+						this.newAxure();
+						break;
 				}
 			},
 			/**新增文档 */
@@ -163,6 +166,10 @@
 			newExcel() {
 				this.$router.push({name: 'Edit', query: {type: 'sheet', parentId: this.searchParams.parentId}})
 			},
+			/**新增axure */
+			newAxure(){
+				this.$router.push({name: 'Edit', query: {type: 'axure', parentId: this.searchParams.parentId}})
+      },
 			/**新增文件夹 */
 			newFolder() {
 				newFolder({parentId: this.searchParams.parentId}, () => {

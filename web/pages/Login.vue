@@ -106,14 +106,22 @@
 				let formData = {...this.formData}
 				// 登录操作
 				userModel.doLogin(formData).then(() => {
-					this.$router.push(this.fromUrl || '/dashboard')
+					if(this.fromUrl){
+						this.$router.push(this.fromUrl)
+          }else{
+						userModel.goBeforeLoginUrl()
+					}
 				})
 			},
 			doRegister() {
 				let formData = {...this.formData}
 				// 登录操作
 				userModel.doRegister(formData).then(() => {
-					this.$router.push(this.fromUrl || '/dashboard')
+					if(this.fromUrl){
+						this.$router.push(this.fromUrl)
+					}else{
+						userModel.goBeforeLoginUrl()
+					}
 				})
 			},
 			switchType(){
@@ -148,6 +156,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    left: 0;
+    top: 0;
     z-index: 1;
   }
 

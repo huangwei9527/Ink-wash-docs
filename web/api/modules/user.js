@@ -13,6 +13,8 @@ export const register = p => $axios.post('/inkwash/auth/register', p);
 export const getUserInfo = () => $axios.get('/inkwash/user/info');
 // 获取用户信息 by userId
 export const getUserInfoById = p => $axios.get('/inkwash/user/getInfoById', p);
+// 获取用户信息 by userId
+export const getUserInfoByIds = p => $axios.get('/inkwash/user/getInfoByIds', p);
 
 // 修改用户昵称
 export const updateNickName = p => $axios.post('/inkwash/user/update/name', p);

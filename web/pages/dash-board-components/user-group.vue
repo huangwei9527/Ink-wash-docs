@@ -98,7 +98,7 @@
                     class="user-item"
                     v-for="(tag, index) in selectUser"
                     :key="index"
-                    :size="mini"
+                    size="mini"
                     @close="delGroupUser(tag._id, index)"
                     closable>
               <img class="userHeadImage" :src="tag.avatar || userHeadImage" alt="">
@@ -173,9 +173,7 @@
 				this.$API.getUserGroupList().then(res => {
 					this.groupList = res.body || [];
 					this.loading = false;
-					if (!this.groupList.length) {
-						this.noData = true;
-					}
+					this.noData = !this.groupList.length;
 				}).catch(() => {
 					this.loading = false;
 				})

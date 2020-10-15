@@ -37,13 +37,14 @@
       <template v-if="type === 'sheet'">
         <excelEdit :content="content" ref="edit"/>
       </template>
+      <template v-if="type === 'axure'">
+        <axureEdit :content="content" ref="edit"/>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
-	import docsEdit from "./components/docs-edit"
-	import excelEdit from "./components/excel-edit"
 	import {
 		Dropdown,
 		DropdownMenu,
@@ -53,6 +54,8 @@
 		Input
 	} from 'element-ui'
 
+	// 全局变量纪录上一个页面路由信息
+	let currentHistoryLength = 0;
 	export default {
 		components: {
 			[ButtonGroup.name]: ButtonGroup,
@@ -61,8 +64,10 @@
 			[Dropdown.name]: Dropdown,
 			[DropdownMenu.name]: DropdownMenu,
 			[DropdownItem.name]: DropdownItem,
-			docsEdit,
-			excelEdit
+			docsEdit:  () => import('./components/docs-edit'),
+			excelEdit:  () => import('./components/excel-edit'),
+			axureEdit:  () => import('./components/axure-edit'),
+
 		},
 		data() {
 			return {
@@ -78,6 +83,9 @@
 			this.id = this.$route.query.id;
 			this.parentId = this.$route.query.parentId;
 			this.type = this.$route.query.type;
+
+			// 记录路由历史纪录长度
+			currentHistoryLength = window.history.length;
 		},
 		mounted() {
 			if (this.id) {
@@ -85,8 +93,11 @@
 			}
 		},
 		methods: {
+			/**
+			 * 兼容里面有iframe时的返回
+			 */
 			goBack() {
-				this.$router.go(-1);
+				window.history.go((currentHistoryLength - window.history.length) + (-1))
 			},
 			/**
 			 * 获取文档信息

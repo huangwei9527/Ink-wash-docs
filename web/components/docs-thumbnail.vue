@@ -37,7 +37,10 @@
 	let imgDoc = require('@/common/images/docs.png')
 	let imgExcel = require('@/common/images/excel.png')
 	let imgF = require('@/common/images/f.png')
+	let imgAxure = require('@/common/images/axure.png')
 	import newFolder from '@/components/new-folder/index.js'
+	import addCooperationer from '@/components/add-cooperationer/index.js'
+	import shareSetting from '@/components/share-setting/index.js'
 	import {
 		Dropdown,
 		DropdownMenu,
@@ -56,6 +59,10 @@
 				default: () => {
 				}
 			},
+      canOpenDocs: {
+				type: Boolean,
+        default: true
+      },
 			showCreateTime: Boolean,
 			showUpdateTime: {
 				type: Boolean,
@@ -69,7 +76,7 @@
 				type: Boolean,
 				default: true
 			},
-      // 操作按钮显示哪些按钮  根据type来匹配。
+			// 操作按钮显示哪些按钮  根据type来匹配。
 			btnList: {
 				type: Array,
 				default: () => {
@@ -104,11 +111,11 @@
 					eventType: 'copyUrl',
 					iconClass: ''
 				}, {
-					title: '分享设置',
+					title: '访问设置',
 					eventType: 'shareSetting',
 					iconClass: ''
 				}, {
-					title: '协作编辑',
+					title: '协作设置',
 					eventType: 'cooperation',
 					iconClass: ''
 				}, {
@@ -164,7 +171,8 @@
 				let map = {
 					folder: imgF,
 					docs: imgDoc,
-					sheet: imgExcel
+					sheet: imgExcel,
+					axure: imgAxure
 				}
 				return map[type] ? map[type] : imgDoc
 			},
@@ -204,9 +212,16 @@
 					case 'destroy':
 						this.destroy();
 						break;
+					case 'unCooperation':
+						this.unCooperation();
+						break;
 				}
 			},
 			open() {
+				if (!this.canOpenDocs) {
+					return;
+				}
+
 				// 打开文件夹
 				if (this.docsData.type === 'folder') {
 					this.$emit('open-folder', this.docsData)
@@ -237,7 +252,7 @@
 						this.$message.success('删除成功！');
 						this.$emit('refresh')
 					})
-        })
+				})
 			},
 			copyUrl() {
 				this.$mUtils.copyText(this.getUrl(this.docsData.type, this.docsData._id));
@@ -255,8 +270,8 @@
 					})
 				})
 			},
-      // 恢复文档
-			recovery(){
+			// 恢复文档
+			recovery() {
 				this.$alert('确认恢复文档，恢复后原有协作者将继续有权限编辑！', '操作提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -266,9 +281,9 @@
 						this.$emit('refresh')
 					})
 				})
-      },
-      // 彻底删除
-			destroy(){
+			},
+			// 彻底删除
+			destroy() {
 				this.$alert('删除后将无法找回！', '操作提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -278,10 +293,24 @@
 						this.$emit('refresh')
 					})
 				})
-      },
+			},
+			unCooperation() {
+				this.$alert('确认退出协同编辑？', '操作提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning',
+				}).then(() => {
+					this.$API.removeCooperationUser({
+						userId: this.$store.state.user.userInfo._id,
+						documentId: this.docsData._id
+					}).then(() => {
+						this.$emit('refresh')
+					})
+				})
+			},
 			getUrl(type, id) {
 				if (type !== 'folder') {
-          return  window.location.origin + `/#/docs?type=${type}&id=${id}`;
+					return window.location.origin + `/#/docs?type=${type}&id=${id}`;
 				}
 				let hash = window.location.hash
 				let query = this.$mUtils.getQueryStringArgs() || {};
@@ -289,6 +318,12 @@
 				let queryStr = this.$mUtils.makeQuery({...query, folderId: id})
 				return window.location.origin + `/${hash}${queryStr}`
 			},
+			cooperation() {
+				addCooperationer(this.docsData._id)
+			},
+			shareSetting() {
+				shareSetting(this.docsData._id)
+			}
 		}
 	}
 </script>

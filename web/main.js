@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import './permission.js'
 import httpServer from '@/service/httpServer' // axios拦截器配置
 import * as mUtils from '@/common/js/mUtils'
 import config from '@/config'

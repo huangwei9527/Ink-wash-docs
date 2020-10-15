@@ -46,6 +46,14 @@ export const getMyCollectDocumentList = () => $axios.get('/inkwash/docs/myCollec
  * */
 // 我的文档列表
 export const getMyCooperationDocumentList = () => $axios.get('/inkwash/docs/myCooperationDocument')
+// 按小组添加协作人
+export const addCooperationUser = p => $axios.post('/inkwash/docs/addCooperation/userIds', p)
+// 按userIds添加协作人
+export const addCooperationUserByGroup = p => $axios.post('/inkwash/docs/addCooperation/groupId', p)
+// 获取协作人列表
+export const getCooperationUserListByDocumentId = p => $axios.get('/inkwash/docs/getCooperation/userList', p)
+// 删除协作人
+export const removeCooperationUser = p => $axios.post('/inkwash/delCooperation/user', p)
 
 /**
  * 我的浏览历史
@@ -62,3 +70,16 @@ export const getMyRecycleBinDocumentList = () => $axios.get('/inkwash/docs/myRec
 export const recoveryDocument = p => $axios.post('/inkwash/docs/recovery', p)
 // 彻底删除文档
 export const destroyDocument = p => $axios.post('/inkwash/docs/distory', p)
+
+/**
+ * 上传axure压缩包
+ */
+export const docsUplaodAxure = p => $axios.post('/inkwash/docs/axure/upload', p)
+
+/**
+ * 设置访问方式
+ */
+export const getMembersByDocumentId = p => $axios.get('/inkwash/docs/getDocMembers', p)
+export const setDocumentVisitTeam = p => $axios.post('/inkwash/docs/visit/setAsTeam', p)
+export const setDocumentOpen = p => $axios.post('/inkwash/docs/visit/setAsOpen', p)
+export const setDocumentPrivate = p => $axios.post('/inkwash/docs/visit/setAsPrivate', p)

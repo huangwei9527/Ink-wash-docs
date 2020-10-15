@@ -76,6 +76,7 @@ let userModel = {
 	async doLogout() {
 		// 清除store user token
 		store.commit('UPDATE_ACCESS_TOKEN', '');
+		window.sessionStorage.setItem('beforeLoginUrl', '');
 		userModel.goLogin()
 	},
 	/**
@@ -83,7 +84,21 @@ let userModel = {
 	 * @returns {Promise<void>}
 	 */
 	async goLogin() {
+		// 将路由fullpath 保存在缓存中，用于登录完成后跳转
+		let currentUrl = window.location.href.replace(window.location.origin + '/#', '');
+		window.sessionStorage.setItem('beforeLoginUrl', currentUrl);
+		store.commit('UPDATE_ACCESS_TOKEN', '');
 		router.push({name: 'Login'})
+	},
+
+	async goBeforeLoginUrl(){
+		let url = window.sessionStorage.getItem('beforeLoginUrl');
+		if (!url || url.indexOf('/login') != -1) {
+			router.push('/');
+		} else {
+			router.push(url);
+			window.sessionStorage.setItem('beforeLoginUrl', '');
+		}
 	}
 }
 

@@ -57,19 +57,36 @@ class UserController extends Controller {
 	 * 更新个人头像
 	 * @returns {Promise<void>}
 	 */
-	async updateUserAvatar(){
-		const { ctx, service } = this;
-		let userData = await ctx.getUserData()
-		let file = ctx.request.files[0]
-		let fileResult = await service.file.upload(file, 'avatar/' + userData.username);
-		const user = await service.user.updateUserAvatar(fileResult.url);
-		ctx.returnBody(true, user)
+		async updateUserAvatar(){
+			const { ctx, service } = this;
+			let userData = await ctx.getUserData()
+			let file = ctx.request.files[0]
+			let fileResult = await service.file.upload(file, 'avatar/' + userData.username);
+			const user = await service.user.updateUserAvatar(fileResult.url);
+			ctx.returnBody(true, user)
 	}
 
+	/**
+	 * 模糊查询用户
+	 * @returns {Promise<void>}
+	 */
 	async getUserList(){
 		const { ctx, service } = this;
 		const { keywords } = ctx.request.query;
 		const users = await service.user.getUserByKeyWords(keywords);
+		ctx.returnBody(true, users)
+	}
+
+	/**
+	 * 根据用户id数组查询用户
+	 * @returns {Promise<void>}
+	 */
+	async getUserByIds(){
+		const { ctx, service } = this;
+		let { ids } = ctx.request.query;
+		ids = ids || ''
+		ids = ids.split(',');
+		const users = await service.user.getUsersByIds(ids);
 		ctx.returnBody(true, users)
 	}
 }

@@ -172,6 +172,66 @@ class UserController extends Controller {
 		await ctx.service.document.collectDocument(id, status === 'true');
 		ctx.returnBody(true)
 	}
+
+	/**
+	 * 上传axure原型并解压获取访问地址
+	 * @returns {Promise<void>}
+	 */
+	async uploadAxureZip(){
+		const { ctx, service } = this;
+		let file = ctx.request.files[0]
+		let folderName = 'axure/' + (+ new Date());
+		let fileResult = await service.file.unZip(file, folderName);
+		// 拼接访问默认html
+		fileResult.url = fileResult.url + '/index.html';
+		ctx.returnBody(true, fileResult)
+	}
+
+	// 访问设置相关
+	/**
+	 * 获取所有文档授权用户
+	 * @returns {Promise<*|$addToSet.members|{$each}>}
+	 */
+	async getMembersByDocumentId(){
+		const { ctx, service } = this;
+		let {documentId} = ctx.request.query
+		let userList = await service.document.getMembersByDocumentId(documentId)
+		ctx.returnBody(true, userList)
+	}
+
+	/**
+	 * s设置访问方式为团队
+	 * @returns {Promise<*>}
+	 */
+	async setDocumentVisitTeam(){
+		const { ctx, service } = this;
+		let {documentId, userIds} = ctx.request.body
+		await service.document.setDocumentVisitTeam(documentId, userIds)
+		ctx.returnBody(true)
+	}
+
+	/**
+	 * 设置访问方式为公开
+	 * @returns {Promise<*>}
+	 */
+	async setDocumentOpen(){
+		const { ctx, service } = this;
+		let {documentId} = ctx.request.body
+		await service.document.setDocumentOpen(documentId)
+		ctx.returnBody(true)
+	}
+
+	/**
+	 * 设置访问方式为私密
+	 * @returns {Promise<*>}
+	 */
+	async setDocumentPrivate(){
+		const { ctx, service } = this;
+		let {documentId, pass} = ctx.request.body
+		await service.document.setDocumentPrivate(documentId, pass)
+		ctx.returnBody(true)
+	}
+
 }
 
 module.exports = UserController;

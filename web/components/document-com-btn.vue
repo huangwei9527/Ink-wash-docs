@@ -1,11 +1,13 @@
 <template>
   <ul class="document-com-btn-wrapper">
     <li :class="{active: starStatus}">
-      <i class="iconfont icon-dianzan1 cursor-pointer" @click="starFn(!starStatus)"></i>
+      <i v-if="starStatus" class="iconfont icon-dianzan cursor-pointer" @click="starFn(!starStatus)"></i>
+      <i v-else class="iconfont icon-dianzan1 cursor-pointer" @click="starFn(!starStatus)"></i>
       点赞
     </li>
     <li :class="{active: collectStatus}">
-      <i class="iconfont icon-shoucang cursor-pointer" @click="collectFn(!collectStatus)"></i>
+      <i v-if="collectStatus" class="iconfont icon-shoucang1 cursor-pointer" @click="collectFn(!collectStatus)"></i>
+      <i v-else class="iconfont icon-shoucang cursor-pointer" @click="collectFn(!collectStatus)"></i>
       收藏
     </li>
     <!--<li>-->

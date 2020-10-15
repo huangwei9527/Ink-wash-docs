@@ -49,9 +49,10 @@ class UserGroupService extends Service {
 	 */
 	async addUsersToUserGroup(groupId, usersList = []){
 		const {ctx} = this;
-		return await ctx.model.UserGroup.findByIdAndUpdate(groupId, {
+		await ctx.model.UserGroup.findByIdAndUpdate(groupId, {
 			$addToSet: { members: { $each: usersList} }
-		}).populate({
+		})
+		return await ctx.model.UserGroup.findOne({_id: groupId}).populate({
 			path: 'members',
 			model: ctx.model.User,
 			select: 'name username _id email avatar '
@@ -74,10 +75,10 @@ class UserGroupService extends Service {
 	 * @returns {Promise<*>}
 	 */
 	async foundUserListByGroupId(groupId){
-		const {ctx} = this;
-		let group = await ctx.model.UserGroup.findeOne({_id: groupId});
+		const {ctx, service} = this;
+		let group = await ctx.model.UserGroup.findOne({_id: groupId});
 		group = group.toObject()
-		return await ctx.service.User.getUsersByIds(group.members)
+		return service.user.getUsersByIds(group.members)
 	}
 
 	async delUserGroup(id){

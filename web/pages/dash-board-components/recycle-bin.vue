@@ -22,6 +22,7 @@
                   :showAuthor="false"
                   :showCreateTime="true"
                   :btnList="['recovery', 'destroy']"
+                  :canOpenDocs="false"
                   :key="index"/>
         </template>
         <noFunData v-if="noData"></noFunData>

@@ -11,6 +11,7 @@ export default new Router({
 		{
 			path: '/',
 			name: 'Home',
+			redirect: {name: 'DashBoardWork'},
 			component: () => import('@/pages/Home')
 		},
 		{
@@ -22,49 +23,76 @@ export default new Router({
 				{
 					path: 'work',
 					name: 'DashBoardWork',
-					component: () => import('@/pages/dash-board-components/work')
+					component: () => import('@/pages/dash-board-components/work'),
+					meta: {
+
+					}
 				},
 				{
 					path: 'collection',
 					name: 'DashBoardCollection',
-					component: () => import('@/pages/dash-board-components/my-collection')
+					component: () => import('@/pages/dash-board-components/my-collection'),
+					meta: {
+
+					}
 				},
 				{
 					path: 'document',
 					name: 'DashBoardDocument',
-					component: () => import('@/pages/dash-board-components/my-document')
+					component: () => import('@/pages/dash-board-components/my-document'),
+					meta: {
+
+					}
 				},
 				{
 					path: 'cooperation',
 					name: 'DashBoardCooperation',
-					component: () => import('@/pages/dash-board-components/my-cooperation')
+					component: () => import('@/pages/dash-board-components/my-cooperation'),
+					meta: {
+
+					}
 				},
 				{
 					path: 'history',
 					name: 'DashBoardVisitHistory',
-					component: () => import('@/pages/dash-board-components/visit-history')
+					component: () => import('@/pages/dash-board-components/visit-history'),
+					meta: {
+
+					}
 				},
 				{
 					path: 'recycle-bin',
 					name: 'DashBoardRecycleBin',
-					component: () => import('@/pages/dash-board-components/recycle-bin')
+					component: () => import('@/pages/dash-board-components/recycle-bin'),
+					meta: {
+
+					}
 				},
 				{
 					path: 'group',
 					name: 'DashBoardGroup',
-					component: () => import('@/pages/dash-board-components/user-group')
+					component: () => import('@/pages/dash-board-components/user-group'),
+					meta: {
+
+					}
 				}
 			]
 		},
 		{
 			path: '/edit',
 			name: 'Edit',
-			component: () => import('@/pages/editor/index')
+			component: () => import('@/pages/editor/index'),
+			meta: {
+
+			}
 		},
 		{
 			path: '/docs',
 			name: 'DocsView',
-			component: () => import('@/pages/docs-view/index')
+			component: () => import('@/pages/docs-view/index'),
+			meta: {
+				noNeedLogin: true,
+			}
 		},
 		{
 			path: '/login',
@@ -73,6 +101,14 @@ export default new Router({
 			meta: {
 				noNeedLogin: true,
 				noHeader: true
+			}
+		},
+		{
+			path: '/*',
+			component: () => import('@/pages/404'),
+			meta: {
+				trust: true,
+				noNeedLogin: true
 			}
 		}
 	]

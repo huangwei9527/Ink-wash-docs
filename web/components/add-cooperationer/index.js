@@ -4,8 +4,7 @@ let ComponentConstructor = Vue.extend(Index);
 let instance;
 
 /**
- *
- * 分享|访问设置
+ * 管理协作人
  * @param documentId  文档id
  * @constructor
  */

@@ -47,12 +47,21 @@ module.exports = app => {
 		}],
 		// 协作人员
 		cooperation_user: [{
-			type: String
+			type: String,
+			ref: "User"
 		}],
 		// 授权用户
 		members: [{
-			type: String
+			type: String,
+			ref: "User"
 		}],
+		visitType: {
+			type: String, // open: 公开， team: 团队， private: 私密
+			default: 'open'
+		},
+		visitPass: {
+			type: String
+		},
 		// 是否已删除
 		is_delete: {
 			type: Boolean,

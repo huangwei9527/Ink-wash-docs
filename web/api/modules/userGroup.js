@@ -14,5 +14,5 @@ export const getUserGroupList = () => $axios.get('/inkwash/userGroup/list');
 export const addUserToGroup = p => $axios.post('/inkwash/userGroup/addUsers', p);
 // 删除用户从分组
 export const delUserFromGroup = p => $axios.post('/inkwash/userGroup/delUser', p);
-// 获取用户类别从分组
+// 获取用户列表从分组
 export const getUserListFromGroup = p => $axios.get('/inkwash/userGroup/userList', p);

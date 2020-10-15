@@ -6,6 +6,13 @@
   "description": "水墨文档",
   "glyphs": [
     {
+      "icon_id": "3219722",
+      "name": "收藏",
+      "font_class": "shoucang1",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
       "icon_id": "1604932",
       "name": "更多",
       "font_class": "weibiaoti5",

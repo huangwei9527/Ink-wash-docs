@@ -324,6 +324,104 @@ class DocumentService extends Service {
 		// 访问数加一
 		await ctx.model.Document.findByIdAndUpdate({_id: id}, {$inc: {visit_count: 1}})
 	}
+
+
+	/**
+	 * 通过user list 添加协作人
+	 * @param documentId
+	 * @param userIds
+	 * @returns {Promise<$addToSet.cooperation_user|{$each}|query.cooperation_user|{$elemMatch}>}
+	 */
+	async addCooperationUser(documentId, userIds){
+		const {ctx} = this;
+		await ctx.model.Document.findByIdAndUpdate(documentId, {
+			$addToSet: { cooperation_user: { $each: userIds} }
+		})
+		let documentData = await ctx.model.Document.findOne({_id: documentId}).populate({
+			path: 'cooperation_user',
+			model: ctx.model.User,
+			select: 'name username _id email avatar '
+		}).exec();
+		documentData = documentData.toObject();
+		return documentData.cooperation_user
+	}
+
+	/**
+	 * 获取协作人列表
+	 * @param documentId
+	 * @returns {Promise<RegExpExecArray>}
+	 */
+	async getCooperationUserListByDocumentId(documentId){
+		const {ctx} = this;
+		let doc = await ctx.model.Document.findOne({_id: documentId}).populate({
+			path: 'cooperation_user',
+			model: ctx.model.User,
+			select: 'name username _id email avatar '
+		}).exec();
+		doc = doc.toObject()
+		return doc.cooperation_user
+	}
+
+	/**
+	 * 移出协作人
+	 * @param documentId
+	 * @param userId
+	 * @returns {Promise<*>}
+	 */
+	async removeCooperationUser(documentId, userId){
+		const {ctx} = this;
+		return await ctx.model.Document.updateOne({_id: documentId}, {$pull: {cooperation_user: userId}}, {
+			runValidators: true
+		})
+	}
+
+	/**
+	 * 获取当前文档所有权限用户
+	 * @param documentId
+	 * @returns {Promise<$addToSet.members|{$each}>}
+	 */
+	async getMembersByDocumentId(documentId){
+		const {ctx} = this;
+		let doc = await ctx.model.Document.findOne({_id: documentId}).populate({
+			path: 'members',
+			model: ctx.model.User,
+			select: 'name username _id email avatar '
+		}).exec();
+		doc = doc.toObject()
+		return doc.members
+	}
+
+	/**
+	 * 设置团队访问
+	 * @param documentId
+	 * @param users
+	 * @returns {Promise<*>}
+	 */
+	async setDocumentVisitTeam(documentId, users){
+		const {ctx} = this;
+		return await ctx.model.Document.findByIdAndUpdate(documentId, {$set: {members: users, visitType: 'team'}});
+	}
+
+	/**
+	 * 设置公开访问
+	 * @param documentId
+	 * @returns {Promise<*>}
+	 */
+	async setDocumentOpen(documentId){
+		const {ctx} = this;
+		return await ctx.model.Document.findByIdAndUpdate(documentId, {$set: {visitType: 'open'}});
+	}
+
+	/**
+	 * 设置私密访问
+	 * @param documentId
+	 * @param pass
+	 * @returns {Promise<*>}
+	 */
+	async setDocumentPrivate(documentId, pass){
+		const {ctx} = this;
+		return await ctx.model.Document.findByIdAndUpdate(documentId, {$set: {visitType: 'private', visitPass: pass}});
+	}
 }
 
 module.exports = DocumentService;

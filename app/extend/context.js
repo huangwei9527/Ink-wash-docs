@@ -18,11 +18,11 @@ module.exports = {
 	},
 	// 生成token
 	async getToken(data) {
-		return this.app.jwt.sign(data, this.app.config.jwt.secret, {expiresIn: '6000s'});
+		return await this.app.jwt.sign(data, this.app.config.jwt.secret, {expiresIn: 30* 24 * 60 * 60 + 's'});
 	},
 	// 验证token
 	async checkToken(token) {
-		return this.app.jwt.verify(token, this.app.config.jwt.secret)
+		return await this.app.jwt.verify(token, this.app.config.jwt.secret)
 	},
 	// 获取用户信息
 	async getUserData() {

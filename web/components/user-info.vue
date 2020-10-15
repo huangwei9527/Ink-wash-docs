@@ -103,7 +103,6 @@
 			},
 			//保存头像
 			saveAvatar(file) {
-				console.log('file: ', file)
 				let formData = new FormData();
 				formData.append('file', file);
 				this.$API.updateUserAvatar(formData).then(res => {

@@ -5,8 +5,8 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="new-docs">文档</el-dropdown-item>
         <el-dropdown-item command="new-sheet">表格</el-dropdown-item>
+        <el-dropdown-item command="new-axure">产品原型</el-dropdown-item>
         <el-dropdown-item command="new-folder">文件夹</el-dropdown-item>
-        <el-dropdown-item command="new-axure">原型图托管</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>

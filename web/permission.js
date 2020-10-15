@@ -6,25 +6,23 @@ import NProgress from 'nprogress' // 进度条
 import 'nprogress/nprogress.css' // 进度条样式
 import userModel from '@/libs/userModel'
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	NProgress.start()
+	// 检测是否需要用户登录验证
+	if(to.meta.noNeedLogin){
+		next()
+		return;
+	}
+	// 用户登录状态拦截
+	let loginStatus = await userModel.checkLoginState();
+	if (!loginStatus) {
+		userModel.goLogin();
+		return false;
+	}
+
 	//TODO 黄维 根据加载的资源，更新路由meta属性中的title属性，所有的页面title使用route.meta.title
 	next()
 })
-
-async function loginStatusInterceptors(to) {
-	// 判断是否登录，如果没有登录先行登录
-	const isLogined = userModel.checkLoginState();
-	let loginStatus = true;
-	if (!isLogined && !to.meta.noNeedLogin) {
-		try {
-			await userModel.doLogin(to.query)
-		}catch (e) {
-			loginStatus = false;
-		}
-	}
-	return loginStatus
-}
 
 router.afterEach(() => {
 	NProgress.done() // 结束Progress

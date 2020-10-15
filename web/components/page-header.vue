@@ -2,8 +2,8 @@
   <div class="components-page-header">
     <div class="page-header-inner" :class="{'layout-container': !fullWidth, fullWidth: fullWidth}">
       <div class="inline-block logo-wrapper">
-        <img src="../common/images/logo.png" alt="">
-        <span>水墨文档</span>
+        <img class="cursor-pointer" @click="goHome" src="../common/images/logo.png" alt="">
+        <span class="cursor-pointer" @click="goHome">水墨文档</span>
         <slot name="left-slot"></slot>
       </div>
       <div class="header-center-wrapper">
@@ -26,6 +26,17 @@
 		},
 		components: {
 			userHeadBtn
+		},
+		methods: {
+			goHome() {
+				// 已登录就去工作台，
+				// 没登陆就去首页
+				if (this.$store.state.user.access_token) {
+					this.$router.push({name: 'DashBoard'})
+				} else {
+					this.$router.push({name: 'Home'})
+				}
+			}
 		}
 	}
 </script>
@@ -39,7 +50,7 @@
 
   .page-header-inner {
     display: flex;
-    &.fullWidth{
+    &.fullWidth {
       padding: 0 18px;
     }
   }
