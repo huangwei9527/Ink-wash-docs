@@ -1,13 +1,13 @@
 <template>
   <div class="page-axure-view">
     <div class="axure-view">
-      <iframeLayout :url="axureUrl" />
+      <iframeLayout :url="axureUrl"/>
     </div>
     <ul class="docment-sub-info-wrapper">
       <li>
         <span class="paddingR5">作者:</span>
         <span class="user-header-wrapper">
-                <authorHead :userData="document.author" />
+                <authorHead :userData="author"/>
               </span>
       </li>
       <li>
@@ -31,12 +31,19 @@
 
 <script>
 	import authorHead from '@/components/author-head'
-  import iframeLayout from '@/components/iframe-layout'
+	import iframeLayout from '@/components/iframe-layout'
 	import {
 		Tooltip,
 	} from 'element-ui'
+
 	export default {
 		props: {
+			author: {
+				type: Object,
+				default: () => {
+					return {}
+				}
+			},
 			document: {
 				type: Object,
 				default: () => {
@@ -53,24 +60,24 @@
 			iframeLayout,
 			[Tooltip.name]: Tooltip
 		},
-    data(){
+		data() {
 			return {
 				axureUrl: ''
-      }
-    },
+			}
+		},
 		mounted() {
 			this.renderContent();
 		},
 		methods: {
 			renderContent() {
-        this.setContent();
+				this.setContent();
 			},
 			/**
 			 * 设置编辑器内容
 			 * @param Msg
 			 */
 			setContent(dataStr) {
-        this.axureUrl = dataStr;
+				this.axureUrl = dataStr;
 			}
 		},
 		watch: {
@@ -82,30 +89,31 @@
 </script>
 
 <style lang="scss" scoped>
-.page-axure-view{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  .axure-view{
+  .page-axure-view {
     position: relative;
     width: 100%;
     height: 100%;
+    .axure-view {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
   }
-}
-.docment-sub-info-wrapper{
-  position: absolute;
-  right: 0;
-  top: 0;
-  font-size: 12px;
-  color: #6c757d;
-  background: #f2f2f2;
-  height: 36px;
-  line-height: 36px;
-  padding-right: 18px;
-  z-index: 100;
-  li{
-    display: inline-block;
-    padding: 0 8px;
+
+  .docment-sub-info-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+    color: #6c757d;
+    background: #f2f2f2;
+    height: 36px;
+    line-height: 36px;
+    padding-right: 18px;
+    z-index: 100;
+    li {
+      display: inline-block;
+      padding: 0 8px;
+    }
   }
-}
 </style>

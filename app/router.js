@@ -6,6 +6,9 @@
 module.exports = app => {
   const { router, controller, middleware} = app;
   const auth = middleware.auth()
+	// 重定向到index页面
+	app.router.redirect('/', '/index.html', 302);
+
   // 认证
 	router.post('/inkwash/auth/login', controller.auth.login);
   router.post('/inkwash/auth/register', controller.auth.register);

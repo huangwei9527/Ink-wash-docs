@@ -28,11 +28,11 @@ module.exports = {
 	async getUserData() {
 		var token = this.headers.authorization ? this.headers.authorization : '';
 		token = token.substring(7) //把Bearer 截取掉，解析的时候不需要加上Bearer
-		let user = null
+		let user = {}
 		try {
 			user = this.app.jwt.verify(token, this.app.config.jwt.secret);
 		} catch (err) {
-			user = null
+			user = {}
 		}
 		return user;
 	}

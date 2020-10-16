@@ -16,7 +16,10 @@ class DocumentService extends Service {
 			content: documentData.content,
 			parentId: documentData.parentId || '',
 			type: documentData.type,
-			author: userData._id
+			author: userData._id,
+			members: [userData._id],
+			visitType: 'team'
+
 		}
 		return ctx.model.Document.create(documentModel);
 	}
@@ -99,13 +102,15 @@ class DocumentService extends Service {
 		let userData = await ctx.getUserData()
 		let query = {collection_user:{ $elemMatch: {$in: userData._id}}, is_delete: {$ne: true}}
 		// 联查用户表将用户创建者带上
-		return ctx.model.Document.find(query)
+		let docsData = ctx.model.Document.find(query)
 			.select('_id parentId title type created updated')
 			.populate({
 				path: 'author',
 				model: ctx.model.User,
 				select: 'name username _id email avatar '
 			}).exec();
+		return docsData;
+
 	}
 
 	/**
@@ -150,22 +155,43 @@ class DocumentService extends Service {
 	 * @returns {Promise<RegExpExecArray>}
 	 */
 	async getDocumentDetail(id) {
-		const {ctx} = this;
+		const {ctx, service} = this;
 		let userData = await ctx.getUserData()
-		let documentData = await ctx.model.Document.findOne({_id: id}).populate({
-			path: 'author',
-			model: ctx.model.User,
-			select: 'name username _id email avatar'
-		}).exec();
+		let documentData = await ctx.model.Document.findOne({_id: id}).exec();
 		documentData = documentData.toObject();
-		documentData.star_count = documentData.star_user.length;
-		// 当前用户是否已点赞
-		documentData.starStatus = userData && documentData.star_user.includes(userData._id);
-		// 当前用户是否已收藏
-		documentData.collectStatus = userData && documentData.collection_user.includes(userData._id);
-		// 删除冗余字段
-		delete documentData.collection_user
-		delete documentData.star_user
+		// 阅读权限 open(公开)所有人都能访问  team（团队）登录用户在团队 协作人或者作者里都可见 pass（密码）仅作者可看见
+		let readPermission = documentData.visitType === 'open' ||
+			(documentData.visitType === 'team' && ([...documentData.members, ...documentData.cooperation_user, documentData.author].includes(userData._id))) ||
+			(documentData.visitType === 'pass' && documentData.author === userData._id);
+		// 编辑权限
+		let editPermission = (documentData.visitType === 'pass' && documentData.author === userData._id);
+		let resultData = {}
+		resultData.authority = {
+			visitType: documentData.visitType,
+			needLogin: documentData.visitType === 'pass' || documentData.visitType === 'team',
+			read: readPermission,
+			edit: editPermission
+		}
+		resultData.author = await service.user.getUserById(documentData.author)
+		resultData.document = {
+			_id: documentData._id,
+			type: documentData.type,
+			title: documentData.title,
+			content: documentData.content,
+			parentId: documentData.parentId,
+			visit_count: documentData.visit_count,
+			star_count: documentData.star_count,
+			starStatus: userData && documentData.star_user.includes(userData._id),
+			collectStatus: userData && documentData.collection_user.includes(userData._id),
+			updated: documentData.updated,
+			created: documentData.created,
+		}
+		resultData.is_delete = documentData.is_delete;
+
+		return resultData
+
+
+
 		return documentData;
 	}
 

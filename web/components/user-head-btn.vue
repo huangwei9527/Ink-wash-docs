@@ -1,13 +1,13 @@
 <template>
   <div class="user-head-btn-components">
-    <el-dropdown>
+    <el-dropdown v-if="isLogined">
       <div class="inline-block">
         <div class="user-head-btn-img">
           <img :src="userData.avatar || userHeadImage" alt="">
         </div>
         <span class="user-head-btn-name">{{userData.name}}</span>
       </div>
-      <el-dropdown-menu>
+      <el-dropdown-menu v-if="isLogined">
         <el-dropdown-item>
           <userInfo :userData="userData" :showEdit="true">
             <i class="el-icon-user"></i> 个人资料
@@ -25,21 +25,27 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+    <div class="inline-block" v-else>
+      <span class="login-btn" @click="goLogin">登录/注册</span>
+    </div>
   </div>
 </template>
 
 <script>
 	import {
+		Button,
 		Dropdown,
 		DropdownMenu,
 		DropdownItem,
 	} from 'element-ui'
   import resetPassword from '@/components/reset-password'
   import userInfo from '@/components/user-info'
+  import userModel from '@/libs/userModel'
 
 	export default {
 		name: "user-head-btn",
 		components: {
+			[Button.name]: Button,
 			[Dropdown.name]: Dropdown,
 			[DropdownMenu.name]: DropdownMenu,
 			[DropdownItem.name]: DropdownItem,
@@ -52,14 +58,20 @@
 			}
 		},
 		computed: {
+			isLogined(){
+				return this.$store.state.user.access_token
+      },
 			userData() {
 				return this.$store.state.user.userInfo || {}
 			}
 		},
 		methods: {
 			doLogout() {
-				this.$router.push('/login')
-			}
+				userModel.doLogout()
+			},
+			goLogin(){
+				userModel.goLogin()
+      }
 		}
 	}
 </script>
@@ -86,6 +98,15 @@
     .user-head-btn-name {
       font-size: 14px;
       margin-left: 8px;
+    }
+  }
+  .login-btn{
+    text-decoration:underline;
+    text-underline: #999;
+    cursor: pointer;
+    &:hover{
+      color: black;
+      text-underline: #000;
     }
   }
 </style>

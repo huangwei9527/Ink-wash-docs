@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view class="sub-page"/>
+    <router-view class="sub-page" :key="$route.name" />
     <div class="page-footer-wrapper">
       <pageFooter/>
     </div>
@@ -12,9 +12,6 @@
 	export default {
 		components: {
 			pageFooter
-		},
-		created() {
-			this.$store.commit('UPDATE_USER_FROM_LOCAL')
 		}
 	}
 </script>

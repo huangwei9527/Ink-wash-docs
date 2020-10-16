@@ -16,6 +16,7 @@ module.exports = {
 	devServer: devServer,
 	// 输出文件目录
 	assetsDir: "static",
+	publicPath: './',
 	// 修改 pages 入口
 	pages: {
 		index: {

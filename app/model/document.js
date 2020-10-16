@@ -57,7 +57,7 @@ module.exports = app => {
 		}],
 		visitType: {
 			type: String, // open: 公开， team: 团队， private: 私密
-			default: 'open'
+			default: 'team'
 		},
 		visitPass: {
 			type: String

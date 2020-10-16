@@ -43,6 +43,8 @@ String.prototype.replaceAll = function(s1, s2) {
 
 Vue.config.productionTip = false
 
+store.commit('UPDATE_USER_FROM_LOCAL')
+
 new Vue({
   router,
   store,

@@ -6,7 +6,7 @@
       <li>
         <span class="paddingR5">作者:</span>
         <span class="user-header-wrapper">
-                <authorHead :userData="document.author" />
+                <authorHead :userData="author"/>
               </span>
       </li>
       <li>
@@ -35,8 +35,15 @@
 	import {
 		Tooltip,
 	} from 'element-ui'
+
 	export default {
 		props: {
+			author: {
+				type: Object,
+				default: () => {
+					return {}
+				}
+			},
 			document: {
 				type: Object,
 				default: () => {
@@ -104,7 +111,7 @@
 			setContent(dataStr) {
 				try {
 					dataStr = JSON.parse(dataStr)
-				}catch (e) {
+				} catch (e) {
 					console.log(e)
 				}
 				this.editor.loadData(dataStr);
@@ -119,23 +126,24 @@
 </script>
 
 <style lang="scss" scoped>
-.sheet-view-page{
-  position: relative;
-  height: 100%;
-  width: 100%;
-  .excel-edit{
+  .sheet-view-page {
+    position: relative;
     height: 100%;
+    width: 100%;
+    .excel-edit {
+      height: 100%;
+    }
   }
-}
-.docment-sub-info-wrapper{
-  position: absolute;
-  right: 18px;
-  top: 10px;
-  font-size: 12px;
-  color: #6c757d;
-  li{
-    display: inline-block;
-    padding: 0 8px;
+
+  .docment-sub-info-wrapper {
+    position: absolute;
+    right: 18px;
+    top: 10px;
+    font-size: 12px;
+    color: #6c757d;
+    li {
+      display: inline-block;
+      padding: 0 8px;
+    }
   }
-}
 </style>

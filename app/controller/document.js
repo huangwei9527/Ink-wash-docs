@@ -68,9 +68,12 @@ class UserController extends Controller {
 	async getDocumentDetail() {
 		let {ctx} = this;
 		let {id, isVisit} = ctx.request.query
+		let userData = await ctx.getUserData()
 		let document = await ctx.service.document.getDocumentDetail(id);
 		if (isVisit) {
 			await ctx.service.document.documentVisitCountAdd(id);
+		}
+		if(isVisit && userData._id){
 			await ctx.service.user.addVisitDocumentHistory(id);
 		}
 		ctx.returnBody(true, document)

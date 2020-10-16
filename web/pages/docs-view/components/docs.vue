@@ -9,7 +9,7 @@
           <li>
             <span class="paddingR5">作者:</span>
             <span class="user-header-wrapper">
-                <authorHead :userData="document.author" />
+                <authorHead :userData="author"/>
               </span>
           </li>
           <li>
@@ -44,6 +44,12 @@
 
 	export default {
 		props: {
+			author: {
+				type: Object,
+				default: () => {
+					return {}
+				}
+			},
 			document: {
 				type: Object,
 				default: () => {

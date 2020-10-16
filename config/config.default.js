@@ -54,7 +54,10 @@ module.exports = appInfo => {
 		mode: 'file'
 	};
 
-
+	config.static = {
+		prefix: '/',
+		dir: [path.join(__dirname, '../app/public'), path.join(__dirname, '../dist')]// 多静态文件入口
+	}
 
   return {
     ...config,

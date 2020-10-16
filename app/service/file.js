@@ -24,7 +24,7 @@ class FileService extends Service {
 		// 返回文件信息
 		return {
 			fileName: file.filename,
-			url:ctx.app.config.BASE_URL + `/public/resource/${folderName ? folderName + '/' : ''}${file.filename}`
+			url:ctx.app.config.BASE_URL + `/resource/${folderName ? folderName + '/' : ''}${file.filename}`
 		}
 	}
 	/***
@@ -43,7 +43,7 @@ class FileService extends Service {
 			await extract(file.filepath, { dir: folderPath })
 			return {
 				fileName: file.filename,
-				url: ctx.app.config.BASE_URL + `/public/resource/${folderName ? folderName + '/' : ''}`
+				url: ctx.app.config.BASE_URL + `/resource/${folderName ? folderName + '/' : ''}`
 			}
 		} catch (err) {
 			throw new Error(err);

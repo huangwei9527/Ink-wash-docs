@@ -2,7 +2,7 @@
 
 const Service = require('egg').Service;
 
-let selectUserKey = {password:0};
+let selectUserKey = {password:0, history_visit_doc: 0};
 
 class UserService extends Service {
 	/**

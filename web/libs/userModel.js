@@ -85,7 +85,8 @@ let userModel = {
 	 */
 	async goLogin() {
 		// 将路由fullpath 保存在缓存中，用于登录完成后跳转
-		let currentUrl = window.location.href.replace(window.location.origin + '/#', '');
+		let indexOf = window.location.href.indexOf('#/')
+		let currentUrl = window.location.href.slice(indexOf, window.location.href.length);
 		window.sessionStorage.setItem('beforeLoginUrl', currentUrl);
 		store.commit('UPDATE_ACCESS_TOKEN', '');
 		router.push({name: 'Login'})
