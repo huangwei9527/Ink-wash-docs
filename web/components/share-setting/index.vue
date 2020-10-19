@@ -93,6 +93,9 @@
       </div>
     </div>
     <span slot="footer" class="dialog-footer">
+      <div class="pull-left">
+        <el-checkbox size="small" border v-model="useToChildren">应用到目录下的所有文档</el-checkbox>
+      </div>
       <el-button @click="visible = false">取 消</el-button>
       <el-button type="primary" @click="conformFn">确 定</el-button>
     </span>
@@ -107,7 +110,8 @@
 		Radio,
 		Select,
 		Option,
-		Tag
+		Tag,
+		Checkbox
 	} from 'element-ui'
 
 	export default {
@@ -118,7 +122,8 @@
 			[Dialog.name]: Dialog,
 			[Input.name]: Input,
 			[Button.name]: Button,
-			[Radio.name]: Radio
+			[Radio.name]: Radio,
+			[Checkbox.name]: Checkbox,
 		},
 		data() {
 			return {
@@ -135,7 +140,8 @@
 				userInput: [],
 				userOptions: [],
 				selectUserList: [],
-        docsData: {}
+        docsData: {},
+				useToChildren: false, // 应用到子文件
 			}
 		},
 		created() {
@@ -145,7 +151,7 @@
 		methods: {
 			getDocsData(){
 				this.$API.getDocumentDetail({id: this.documentId}).then(res => {
-					this.docsData = res.body;
+					this.docsData = res.body.document;
 					this.type = this.docsData.visitType || 'open';
 					this.pass = this.docsData.visitPass;
         })
@@ -162,7 +168,7 @@
 				}
 			},
 			saveAsOpen(){
-				this.$API.setDocumentOpen({documentId: this.documentId}).then(() => {
+				this.$API.setDocumentOpen({documentId: this.documentId, useToChildren: this.useToChildren}).then(() => {
 					this.visible = false;
 					this.$meaasge.success('设置成功！')
         })
@@ -172,13 +178,13 @@
 				this.selectUserList.forEach(item => {
 					userIds.push(item._id);
         })
-				this.$API.setDocumentVisitTeam({documentId: this.documentId, userIds: userIds}).then(() => {
+				this.$API.setDocumentVisitTeam({documentId: this.documentId, userIds: userIds, useToChildren: this.useToChildren}).then(() => {
 					this.visible = false;
 					this.$meaasge.success('设置成功！')
 				})
 			},
 			saveAsPrivate(){
-				this.$API.setDocumentPrivate({documentId: this.documentId, pass: this.pass}).then(() => {
+				this.$API.setDocumentPrivate({documentId: this.documentId, pass: this.pass, useToChildren: this.useToChildren}).then(() => {
 					this.visible = false;
 					this.$meaasge.success('设置成功！')
 				})

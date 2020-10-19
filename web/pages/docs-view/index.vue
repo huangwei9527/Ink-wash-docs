@@ -98,7 +98,7 @@
 	import documentComBtn from '@/components/document-com-btn'
 	import {
 		Button,
-    Input
+		Input
 	} from 'element-ui'
 
 	// 全局变量纪录上一个页面路由信息
@@ -168,16 +168,23 @@
 				this.hasPermission = this.authority.read;
 				if (!this.hasPermission && this.authority.visitType !== 'private') {
 					this.showNoPermissionTips = true;
-          return;
+					return;
 				}
-				if(!this.hasPermission && this.authority.visitType === 'private'){
+				if (!this.hasPermission && this.authority.visitType === 'private') {
 					this.showPasswordCheck = true;
 					return;
-        }
+				}
 			},
-			checkPass(){
-
-      },
+			checkPass() {
+				this.$API.documentCheckPass({documentId: this.documentData._id, pass: this.pass}).then(res => {
+					if (res.body) {
+						this.showPasswordCheck = false;
+						this.hasPermission = true;
+					}else{
+						this.$message.error('访问密码错误，请重试！')
+          }
+				})
+			},
 			/**
 			 * 点赞后更新点赞数量
 			 * @param num
@@ -292,8 +299,7 @@
     }
   }
 
-
-  .wa-tips-wrapper{
+  .wa-tips-wrapper {
     position: absolute;
     top: 0;
     left: 0;
@@ -301,9 +307,9 @@
     height: 100%;
     z-index: 99;
     display: flex;
-    justify-content:center;
-    align-items:center;
-    .wa-tips-main{
+    justify-content: center;
+    align-items: center;
+    .wa-tips-main {
       width: 400px;
       height: 300px;
       background: white;
@@ -311,35 +317,37 @@
     }
   }
 
-  .tips-wrapper{
+  .tips-wrapper {
     text-align: center;
     font-weight: 600;
     font-size: 36px;
     padding-bottom: 30px;
     padding-top: 80px;
   }
-  .tips-text-wrapper{
+
+  .tips-text-wrapper {
     text-align: center;
     font-size: 18px;
     font-weight: 600;
     color: #666;
   }
 
-  .check-pass-title{
+  .check-pass-title {
     font-weight: 600;
     font-size: 18px;
     color: #666;
     text-align: center;
     padding-top: 60px;
   }
-  .check-pass-input-wrapper{
+
+  .check-pass-input-wrapper {
     display: flex;
     padding: 60px 60px 0;
-    .check-pass-input{
+    .check-pass-input {
       flex: 1;
       padding-right: 20px;
     }
-    .check-pass-btn{
+    .check-pass-btn {
       width: 80px;
     }
   }

@@ -46,15 +46,43 @@ class DocumentService extends Service {
 	 */
 	async getDocumentList(searchParams) {
 		const {ctx} = this;
+		let userData = await ctx.getUserData()
 		let query = {parentId: searchParams.parentId, is_delete: {$ne: true}}
-		// 联查用户表将用户创建者带上
-		return ctx.model.Document.find(query)
-			.select('_id parentId title type created updated')
+		let documentList = await ctx.model.Document.find(query)
 			.populate({
-				path: 'author',
-				model: ctx.model.User,
-				select: 'name username _id email avatar '
-			}).exec();
+			path: 'author',
+			model: ctx.model.User,
+			select: 'name username _id email avatar '
+		}).exec()
+		let resultList = [];
+		documentList.forEach(item => {
+			item = item.toObject();
+			let isShow = false;
+			let isEditor = false;
+			// 判断是否有权限看
+			// open 只有作者可见， 团队成员内可见， 私密也只有成员科技， 参与协作可见该文档
+			if(item.author._id.toString() === userData._id.toString() || item.collection_user.includes(userData._id.toString())){
+				isShow = true;
+				isEditor = true;
+			}
+			if(item.visitType === 'team' && item.members.includes(userData._id.toString())){
+				isShow = true;
+			}
+			if(isShow){
+				resultList.push({
+					_id: item._id,
+					parentId: item.parentId,
+					title: item.title,
+					type: item.type,
+					author: item.author,
+					created: item.created,
+					updated: item.updated,
+					isEditor: isEditor,
+					isAuthor: item.author._id == userData._id
+				})
+			}
+		})
+		return resultList;
 	}
 
 	/**
@@ -154,7 +182,7 @@ class DocumentService extends Service {
 	 * @param id 文档id
 	 * @returns {Promise<RegExpExecArray>}
 	 */
-	async getDocumentDetail(id) {
+	async getDocumentDetail(id, isVisit) {
 		const {ctx, service} = this;
 		let userData = await ctx.getUserData()
 		let documentData = await ctx.model.Document.findOne({_id: id}).exec();
@@ -162,13 +190,13 @@ class DocumentService extends Service {
 		// 阅读权限 open(公开)所有人都能访问  team（团队）登录用户在团队 协作人或者作者里都可见 pass（密码）仅作者可看见
 		let readPermission = documentData.visitType === 'open' ||
 			(documentData.visitType === 'team' && ([...documentData.members, ...documentData.cooperation_user, documentData.author].includes(userData._id))) ||
-			(documentData.visitType === 'pass' && documentData.author === userData._id);
+			(documentData.visitType === 'private' && documentData.author === userData._id);
 		// 编辑权限
-		let editPermission = (documentData.visitType === 'pass' && documentData.author === userData._id);
+		let editPermission = (documentData.visitType === 'private' && documentData.author === userData._id);
 		let resultData = {}
 		resultData.authority = {
 			visitType: documentData.visitType,
-			needLogin: documentData.visitType === 'pass' || documentData.visitType === 'team',
+			needLogin: documentData.visitType === 'private' || documentData.visitType === 'team',
 			read: readPermission,
 			edit: editPermission
 		}
@@ -188,11 +216,11 @@ class DocumentService extends Service {
 		}
 		resultData.is_delete = documentData.is_delete;
 
+		if(!isVisit){
+			resultData.document.visitPass = documentData.visitPass;
+		}
+
 		return resultData
-
-
-
-		return documentData;
 	}
 
 	/**
@@ -208,7 +236,9 @@ class DocumentService extends Service {
 			title: title,
 			parentId: parentId || '',
 			type: 'folder',
-			author: userData._id
+			author: userData._id,
+			members: [userData._id],
+			visitType: 'team'
 		}
 		return ctx.model.Document.create(documentModel);
 	}
@@ -447,6 +477,40 @@ class DocumentService extends Service {
 	async setDocumentPrivate(documentId, pass){
 		const {ctx} = this;
 		return await ctx.model.Document.findByIdAndUpdate(documentId, {$set: {visitType: 'private', visitPass: pass}});
+	}
+
+	/**
+	 * 校验密码
+	 * @param documentId
+	 * @param pass
+	 * @returns {Promise<boolean>}
+	 */
+	async checkDocumentPassword(documentId, pass){
+		const {ctx} = this;
+		let doc = await ctx.model.Document.findOne({_id: documentId}).exec()
+		doc = doc.toObject();
+		return pass === doc.visitPass
+	}
+
+	/**
+	 * 根据id获取子级
+	 * @param documentId
+	 * @returns {Promise<void>}
+	 */
+	async findChildrenListById(documentId){
+		const {ctx} = this;
+		let docsList = [];
+		let finFn = async id => {
+			let l = await ctx.model.Document.find({parentId: id}).exec();
+			for(let i = 0, len = l.length; i < len; i++){
+				if(l[i].type === 'folder'){
+					await finFn(l[i]._id);
+				}
+				docsList.push(l[i])
+			}
+		}
+		await finFn(documentId)
+		return docsList;
 	}
 }
 

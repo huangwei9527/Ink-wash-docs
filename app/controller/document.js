@@ -69,7 +69,7 @@ class UserController extends Controller {
 		let {ctx} = this;
 		let {id, isVisit} = ctx.request.query
 		let userData = await ctx.getUserData()
-		let document = await ctx.service.document.getDocumentDetail(id);
+		let document = await ctx.service.document.getDocumentDetail(id, isVisit);
 		if (isVisit) {
 			await ctx.service.document.documentVisitCountAdd(id);
 		}
@@ -200,6 +200,8 @@ class UserController extends Controller {
 		let {documentId} = ctx.request.query
 		let userList = await service.document.getMembersByDocumentId(documentId)
 		ctx.returnBody(true, userList)
+
+
 	}
 
 	/**
@@ -208,8 +210,18 @@ class UserController extends Controller {
 	 */
 	async setDocumentVisitTeam(){
 		const { ctx, service } = this;
-		let {documentId, userIds} = ctx.request.body
+		let {documentId, userIds, useToChildren} = ctx.request.body
 		await service.document.setDocumentVisitTeam(documentId, userIds)
+		// 不需要同步子级权限
+		if(!useToChildren){
+			ctx.returnBody(true)
+			return
+		}
+		// 同步修改子节点权限
+		let childrenList = await service.document.findChildrenListById(documentId);
+		for(let i = 0, len = childrenList.length; i < len; i++){
+			await service.document.setDocumentVisitTeam(childrenList[i]._id, userIds)
+		}
 		ctx.returnBody(true)
 	}
 
@@ -219,8 +231,18 @@ class UserController extends Controller {
 	 */
 	async setDocumentOpen(){
 		const { ctx, service } = this;
-		let {documentId} = ctx.request.body
-		await service.document.setDocumentOpen(documentId)
+		let {documentId, useToChildren} = ctx.request.body
+		await service.document.setDocumentOpen(documentId);
+		// 不需要同步子级权限
+		if(!useToChildren){
+			ctx.returnBody(true)
+			return
+		}
+		// 同步修改子节点权限
+		let childrenList = await service.document.findChildrenListById(documentId);
+		for(let i = 0, len = childrenList.length; i < len; i++){
+			await service.document.setDocumentOpen(childrenList[i]._id)
+		}
 		ctx.returnBody(true)
 	}
 
@@ -230,9 +252,30 @@ class UserController extends Controller {
 	 */
 	async setDocumentPrivate(){
 		const { ctx, service } = this;
-		let {documentId, pass} = ctx.request.body
-		await service.document.setDocumentPrivate(documentId, pass)
+		let {documentId, pass, useToChildren} = ctx.request.body
+		await service.document.setDocumentPrivate(documentId, pass);
+		// 不需要同步子级权限
+		if(!useToChildren){
+			ctx.returnBody(true)
+			return
+		}
+		// 同步修改子节点权限
+		let childrenList = await service.document.findChildrenListById(documentId);
+		for(let i = 0, len = childrenList.length; i < len; i++){
+			await service.document.setDocumentPrivate(childrenList[i]._id, pass)
+		}
 		ctx.returnBody(true)
+	}
+
+	/**
+	 * 校验文档密码是否正确
+	 * @returns {Promise<void>}
+	 */
+	async checkDocumentPassword(){
+		const { ctx, service } = this;
+		let {documentId, pass} = ctx.request.body
+		let isRight = await service.document.checkDocumentPassword(documentId, pass)
+		ctx.returnBody(true, isRight)
 	}
 
 }

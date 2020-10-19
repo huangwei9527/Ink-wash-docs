@@ -7,7 +7,7 @@
           <el-breadcrumb-item :to="{name: 'DashBoardWork'}">
             <span class="dash-board-title">工作台</span>
           </el-breadcrumb-item>
-          <template v-for="(item, index) in breadcrumbData" >
+          <template v-for="(item, index) in breadcrumbData">
             <el-breadcrumb-item
                     v-if="(index + 1) !== breadcrumbData.length"
                     :to="{name: 'DashBoardWork', query: {folderId: item._id}}"
@@ -19,9 +19,9 @@
         </el-breadcrumb>
       </div>
       <div class="right-wrapper">
-        <newDocsBtn @command="newCommand" />
+        <newDocsBtn @command="newCommand"/>
         <span class="cut-line"></span>
-        <sortIconBtn />
+        <sortIconBtn/>
       </div>
     </div>
     <!--文档列表-->
@@ -40,7 +40,7 @@
                   :docsData="docs"
                   @open-folder="openFolder(docs)"
                   @refresh="getData"
-                  :btnList="['openBlank', 'edit', 'reName', 'copyUrl', 'shareSetting', 'cooperation', 'delete']"
+                  :btnList="btnList(docs)"
                   :key="index"/>
         </template>
         <noFunData v-if="noData"></noFunData>
@@ -57,8 +57,8 @@
 	import newFolder from '@/components/new-folder/index.js'
 	import noFunData from '@/components/notFundData'
 	import {
-    Breadcrumb,
-    BreadcrumbItem
+		Breadcrumb,
+		BreadcrumbItem
 	} from 'element-ui'
 
 	export default {
@@ -78,7 +78,7 @@
 					parentId: ''
 				},
 				docsList: [],
-        docsList_sorted: [], // 按照排序规则重新计算一个列表
+				docsList_sorted: [], // 按照排序规则重新计算一个列表
 				breadcrumbData: []
 			}
 		},
@@ -100,21 +100,34 @@
 		created() {
 			this.searchParams.parentId = this.$route.query.folderId || '';
 			this.getData();
-			if(this.searchParams.parentId){
+			if (this.searchParams.parentId) {
 				this.getPathData(this.searchParams.parentId)
 			}
 		},
 		beforeRouteUpdate(to, from, next) {
 			this.searchParams.parentId = to.query.folderId || '';
-			if(this.searchParams.parentId){
+			if (this.searchParams.parentId) {
 				this.getPathData(this.searchParams.parentId)
-      }else{
+			} else {
 				this.breadcrumbData = [];
-      }
+			}
 			this.getData();
 			next();
 		},
 		methods: {
+			/**
+			 * 根据文档信息展示哪些按钮
+			 * */
+			btnList(docsData) {
+				let all = ['openBlank', 'copyUrl'];
+				if (docsData.isAuthor) {
+					all.push('shareSetting', 'cooperation', 'delete', 'reName')
+				}
+				if (docsData.isEditor) {
+					all.push('edit')
+				}
+				return all;
+			},
 			/**
 			 * 获取docs列表页面数据
 			 */
@@ -124,7 +137,7 @@
 					this.docsList = res.body || [];
 					this.docsList_sorted = this.$mUtils.resort([...this.docsList], this.sortType, this.isFolderTop);
 					this.loading = false;
-					if(!this.docsList.length){
+					if (!this.docsList.length) {
 						this.noData = true;
 					}
 				}).catch(() => {
@@ -167,9 +180,9 @@
 				this.$router.push({name: 'Edit', query: {type: 'sheet', parentId: this.searchParams.parentId}})
 			},
 			/**新增axure */
-			newAxure(){
+			newAxure() {
 				this.$router.push({name: 'Edit', query: {type: 'axure', parentId: this.searchParams.parentId}})
-      },
+			},
 			/**新增文件夹 */
 			newFolder() {
 				newFolder({parentId: this.searchParams.parentId}, () => {
@@ -205,14 +218,14 @@
     margin: 0 20px;
   }
 
-  .dash-board-operator-wrapper{
+  .dash-board-operator-wrapper {
     display: flex;
     line-height: 30px;
-    .breadcrumb-wrapper{
+    .breadcrumb-wrapper {
       flex: 1;
       padding-top: 10px;
     }
-    .right-wrapper{
+    .right-wrapper {
       width: 200px;
       text-align: right;
     }

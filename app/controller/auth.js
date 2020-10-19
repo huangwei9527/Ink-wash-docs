@@ -11,7 +11,7 @@ class AuthController extends Controller {
 		const { ctx, service } = this;
 		const { username, password } = ctx.request.body
 		// 验证是否存在
-		const user = await service.user.getUsersByUsername(username);
+		let user = await service.user.getUsersByUsername(username);
 		if (!user) {
 			ctx.returnBody(false, {}, "用户不存在！");
 			return;
@@ -24,6 +24,7 @@ class AuthController extends Controller {
 			return;
 		}
 
+		user = user.toObject();
 		let userDataStr = JSON.parse(JSON.stringify(user));
 		// 生成token
 		let token =await ctx.getToken(userDataStr);
@@ -63,6 +64,7 @@ class AuthController extends Controller {
 
 		let pass = await ctx.helper.createPassword(password.toString())
 		let userData = await ctx.service.user.createUser(username, pass, email);
+		userData = userData.toObject();
 		let userDataStr = JSON.parse(JSON.stringify(userData));
 		// 生成token
 		let token =await ctx.getToken(userDataStr);

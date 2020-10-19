@@ -28,6 +28,7 @@ module.exports = app => {
 	router.post('/inkwash/docs/newFolder', auth, controller.document.createFolder);
 	router.post('/inkwash/docs/rename', auth, controller.document.renameFolder);
 	router.get('/inkwash/docs/path', auth, controller.document.getDocumentPathById);
+	router.post('/inkwash/docs/checkPass', controller.document.checkDocumentPassword);
 	// 上传axure
 	router.post('/inkwash/docs/axure/upload', auth, controller.document.uploadAxureZip);
 	// 点赞收藏

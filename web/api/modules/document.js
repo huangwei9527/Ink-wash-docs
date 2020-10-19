@@ -83,3 +83,4 @@ export const getMembersByDocumentId = p => $axios.get('/inkwash/docs/getDocMembe
 export const setDocumentVisitTeam = p => $axios.post('/inkwash/docs/visit/setAsTeam', p)
 export const setDocumentOpen = p => $axios.post('/inkwash/docs/visit/setAsOpen', p)
 export const setDocumentPrivate = p => $axios.post('/inkwash/docs/visit/setAsPrivate', p)
+export const documentCheckPass = p => $axios.post('/inkwash/docs/checkPass', p)
