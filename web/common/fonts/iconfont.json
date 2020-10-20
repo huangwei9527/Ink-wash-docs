@@ -6,6 +6,13 @@
   "description": "水墨文档",
   "glyphs": [
     {
+      "icon_id": "3315106",
+      "name": "模板",
+      "font_class": "moban",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "3219722",
       "name": "收藏",
       "font_class": "shoucang1",

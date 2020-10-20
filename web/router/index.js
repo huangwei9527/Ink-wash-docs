@@ -53,6 +53,14 @@ export default new Router({
 					}
 				},
 				{
+					path: 'template',
+					name: 'DashBoardTemplate',
+					component: () => import('@/pages/dash-board-components/my-template'),
+					meta: {
+
+					}
+				},
+				{
 					path: 'history',
 					name: 'DashBoardVisitHistory',
 					component: () => import('@/pages/dash-board-components/visit-history'),

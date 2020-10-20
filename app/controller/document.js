@@ -62,6 +62,17 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * 获取我的模板
+	 * @returns {Promise<void>}
+	 */
+	async getMyTemplateDocument(){
+		let {ctx} = this;
+		let {type} = ctx.request.query
+		let documentList = await ctx.service.document.getMyTemplateDocument(type);
+		ctx.returnBody(true, documentList)
+	}
+
+	/**
 	 * 根据id获取文档详情
 	 * @returns {Promise<void>}
 	 */
@@ -84,12 +95,14 @@ class UserController extends Controller {
 	 */
 	async createDocument() {
 		let {ctx} = this;
-		let {id, title, content, type, parentId} = ctx.request.body;
+		let {id, title, content, type, parentId, isTemplate} = ctx.request.body;
 		let document
 		if (id) {
 			document = await ctx.service.document.updateDocument({id, title, content})
+			// 保存历史纪录
+			await ctx.service.document.pushHistory(id, content)
 		} else {
-			document = await ctx.service.document.createDocument({id, title, content, type, parentId})
+			document = await ctx.service.document.createDocument({title, content, type, parentId, isTemplate})
 		}
 		ctx.returnBody(true, document)
 	}

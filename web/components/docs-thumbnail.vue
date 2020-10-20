@@ -82,7 +82,10 @@
 				default: () => {
 					return ['openBlank', 'copyUrl']
 				}
-			}
+			},
+      editFn: {
+				type: Function
+      }
 		},
 		components: {
 			[Dropdown.name]: Dropdown,
@@ -235,7 +238,11 @@
 				window.open(this.getUrl(this.docsData.type, this.docsData._id), '_blank')
 			},
 			edit() {
-				this.$router.push({name: 'Edit', query: {type: this.docsData.type, id: this.docsData._id}})
+				if(this.editFn){
+					this.editFn(this.docsData)
+        }else{
+					this.$router.push({name: 'Edit', query: {type: this.docsData.type, id: this.docsData._id}})
+        }
 			},
 			reName() {
 				newFolder(this.docsData, () => {

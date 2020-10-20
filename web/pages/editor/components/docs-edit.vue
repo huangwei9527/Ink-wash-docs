@@ -200,6 +200,15 @@
 				}
 				this.editor.setValue(mdStr);
 			},
+			/**
+			 * 插入内容
+			 * @param mdStr
+			 */
+			insertContent(mdStr) {
+				if (this.editor) {
+					this.editor.setValue(mdStr);
+				}
+			},
 			destroy() {
 				this.editor.destroy();
 				this.editor = undefined;

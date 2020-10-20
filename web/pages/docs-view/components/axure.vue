@@ -70,7 +70,7 @@
 		},
 		methods: {
 			renderContent() {
-				this.setContent();
+				this.setContent(this.content);
 			},
 			/**
 			 * 设置编辑器内容

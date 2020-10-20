@@ -43,7 +43,7 @@ class FileService extends Service {
 			await extract(file.filepath, { dir: folderPath })
 			return {
 				fileName: file.filename,
-				url: ctx.app.config.BASE_URL + `/resource/${folderName ? folderName + '/' : ''}`
+				url: ctx.app.config.BASE_URL + `/resource/${folderName ||  ''}`
 			}
 		} catch (err) {
 			throw new Error(err);

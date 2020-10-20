@@ -30,6 +30,10 @@
 					path: '/dashboard/cooperation',
 					iconClassName: 'icon-zuzhi'
 				}, {
+					name: '我的模板',
+					path: '/dashboard/template',
+					iconClassName: 'icon-moban'
+				}, {
 					name: '我的团队',
 					path: '/dashboard/group',
 					iconClassName: 'icon-yonghushu'

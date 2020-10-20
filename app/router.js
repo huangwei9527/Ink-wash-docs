@@ -67,5 +67,8 @@ module.exports = app => {
 	router.post('/inkwash/docs/visit/setAsOpen', auth, controller.document.setDocumentOpen);
 	router.post('/inkwash/docs/visit/setAsPrivate', auth, controller.document.setDocumentPrivate);
 
+	// 我的模板
+	router.get('/inkwash/docs/myTemplate', auth, controller.document.getMyTemplateDocument);
+
 
 };

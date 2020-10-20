@@ -90,6 +90,15 @@
 				}
 				this.editor.loadData(dataStr);
 			},
+			/**
+			 * 插入内容 表格插入内容设置为重置整个表单
+			 * @param mdStr
+			 */
+			insertContent(mdStr) {
+				if (this.editor) {
+					this.setContent(mdStr);
+				}
+			},
 			destroy() {
 				this.editor.destroy();
 				this.editor = undefined;

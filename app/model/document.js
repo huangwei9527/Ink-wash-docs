@@ -67,6 +67,10 @@ module.exports = app => {
 			type: Boolean,
 			default: false
 		},
+		// 历史纪录
+		history: [{
+			type: String
+		}],
 	}, {timestamps: {createdAt: 'created', updatedAt: 'updated'}});
 	return mongoose.model('Document', DocumentSchema);
 };

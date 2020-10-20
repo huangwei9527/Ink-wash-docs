@@ -18,19 +18,26 @@
         />
       </div>
       <div class="editor-header-operation text-right">
+        <el-dropdown class="marginR15" v-if="templateList.length && ['docs', 'sheet'].includes(type)">
+          <el-button size="mini">我的模板<i class="el-icon-arrow-down"></i></el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="(item, index) in templateList" :key="index">
+              <div class="" @click="insertTemplate(item)">{{item.title}}</div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
         <el-dropdown split-button size="mini" type="primary" @click="saveDocument">
           保存
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>存为模板</el-dropdown-item>
-            <el-dropdown-item>编辑锁定</el-dropdown-item>
-            <el-dropdown-item>
-              <span class="red">删除</span>
+            <el-dropdown-item v-if="['docs', 'sheet'].includes(type)">
+              <div class="" @click="saveAsTemplate">存为模板</div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </div>
-    <div class="editor-wrapper">
+    <div class="editor-wrapper" v-loading="loading">
       <template v-if="type === 'docs'">
         <docsEdit :content="content" ref="edit"/>
       </template>
@@ -64,23 +71,26 @@
 			[Dropdown.name]: Dropdown,
 			[DropdownMenu.name]: DropdownMenu,
 			[DropdownItem.name]: DropdownItem,
-			docsEdit:  () => import('./components/docs-edit'),
-			excelEdit:  () => import('./components/excel-edit'),
-			axureEdit:  () => import('./components/axure-edit'),
+			docsEdit: () => import('./components/docs-edit'),
+			excelEdit: () => import('./components/excel-edit'),
+			axureEdit: () => import('./components/axure-edit'),
 
 		},
 		data() {
 			return {
+				loading: false,
 				id: '',
 				parentId: '',
 				type: '',
 				title: '',
 				content: '',
-				documentData: {}
+				documentData: {},
+				templateList: []
 			}
 		},
 		created() {
 			this.id = this.$route.query.id;
+			this.isTemplate = this.$route.query.isTemplate;
 			this.parentId = this.$route.query.parentId;
 			this.type = this.$route.query.type;
 
@@ -91,6 +101,7 @@
 			if (this.id) {
 				this.getData();
 			}
+			this.getMyTemplateList();
 		},
 		methods: {
 			/**
@@ -103,16 +114,21 @@
 			 * 获取文档信息
 			 */
 			getData() {
+				this.loading = true;
 				this.$API.getDocumentDetail({id: this.id}).then(res => {
-					this.title = res.body.title || '';
-					this.content = res.body.content || '';
-					this.documentData = res.body;
+					this.loading = false;
+					this.title = res.body.document.title || '';
+					this.content = res.body.document.content || '';
+					this.documentData = res.body.document;
+				}).catch(() => {
+					this.loading = false;
 				})
 			},
 			/**
 			 * 保存文档
 			 */
 			saveDocument() {
+				this.loading = true;
 				// 获取编辑器内容
 				let content = this.$refs.edit.getContent();
 				// 调接口保存
@@ -121,9 +137,35 @@
 					parentId: this.parentId,
 					title: this.title || '新建文档',
 					content: content,
-					type: this.type
+					type: this.type,
+					isTemplate: this.isTemplate
 				}).then(() => {
+					this.loading = false;
 					this.goBack();
+				}).catch(() => {
+					this.loading = false;
+				})
+			},
+			saveAsTemplate() {
+				this.isTemplate = true;
+				this.saveDocument();
+			},
+			getMyTemplateList() {
+				this.$API.getMyTemplate({type: this.type}).then(res => {
+					this.templateList = res.body || [];
+				})
+			},
+			insertTemplate(item) {
+				this.loading = true;
+				let edit = this.$refs.edit
+				// 获取文档详情
+				this.$API.getDocumentDetail({id: item._id}).then(res => {
+					this.loading = false;
+					if (edit.insertContent) {
+						edit.insertContent(res.body.document.content);
+					}
+				}).catch(() => {
+					this.loading = false;
 				})
 			}
 		}

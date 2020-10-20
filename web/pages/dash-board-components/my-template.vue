@@ -1,13 +1,13 @@
 <template>
   <div class="page-my-document">
     <div class="dash-board-operator-wrapper">
-      <div class="dash-board-title">我的收藏</div>
+      <div class="dash-board-title">我的模板</div>
     </div>
     <!--文档列表-->
     <div class="docs-list-wrapper scroll-wrapper">
       <ul class="docs-thumbnail-table-title" >
         <li class="docs-thumbnail-title">标题</li>
-        <li class="docs-info-author">创建者</li>
+        <li class="docs-info-date">创建时间</li>
         <li class="docs-info-date">更新时间</li>
         <li class="docs-info-op">操作</li>
       </ul>
@@ -17,9 +17,13 @@
                   :type="docs.type"
                   docShowType="list"
                   :docsData="docs"
+                  @open-folder="openFolder(docs)"
                   @refresh="getData"
-                  :showAuthor="true"
-                  :btnList="['openBlank', 'copyUrl', 'unCollect']"
+                  :showAuthor="false"
+                  :showCreateTime="true"
+                  :showEditBtn="true"
+                  :btnList="['edit', 'destroy']"
+                  :editFn="editFn"
                   :key="index"/>
         </template>
         <noFunData v-if="noData"></noFunData>
@@ -30,7 +34,7 @@
 
 <script>
 	import docsThumbnail from '@/components/docs-thumbnail'
-  import noFunData from '@/components/notFundData'
+	import noFunData from '@/components/notFundData'
 	export default {
 		components: {
 			docsThumbnail,
@@ -39,7 +43,7 @@
 		data() {
 			return {
 				loading: false,
-        noData: false,
+				noData: false,
 				searchParams: {
 					parentId: ''
 				},
@@ -55,16 +59,19 @@
 			 */
 			getData() {
 				this.loading = true;
-				this.$API.getMyCollectDocumentList().then(res => {
+				this.$API.getMyTemplate().then(res => {
 					this.docsList = res.body || [];
 					this.loading = false;
 					if(!this.docsList.length){
 						this.noData = true;
-          }
+					}
 				}).catch(() => {
 					this.loading = false;
-        })
-			}
+				})
+			},
+			editFn(doc){
+				this.$router.push({name: 'Edit', query: {type: doc.type, id: doc._id, isTemplate: true}})
+      }
 		}
 	}
 </script>

@@ -84,3 +84,8 @@ export const setDocumentVisitTeam = p => $axios.post('/inkwash/docs/visit/setAsT
 export const setDocumentOpen = p => $axios.post('/inkwash/docs/visit/setAsOpen', p)
 export const setDocumentPrivate = p => $axios.post('/inkwash/docs/visit/setAsPrivate', p)
 export const documentCheckPass = p => $axios.post('/inkwash/docs/checkPass', p)
+
+/**
+ * 我的模板
+ */
+export const getMyTemplate = p => $axios.get('/inkwash/docs/myTemplate', p);

@@ -18,7 +18,8 @@ class DocumentService extends Service {
 			type: documentData.type,
 			author: userData._id,
 			members: [userData._id],
-			visitType: 'team'
+			visitType: 'team',
+			isTemplate: !!documentData.isTemplate
 
 		}
 		return ctx.model.Document.create(documentModel);
@@ -40,41 +41,59 @@ class DocumentService extends Service {
 	}
 
 	/**
+	 *
+	 * @param id
+	 * @param content
+	 * @returns {Promise<void>}
+	 */
+	async pushHistory(id, content) {
+		const {ctx} = this;
+		let documentData = await ctx.model.Document.findOne({_id: id}).select('history').exec();
+		documentData = documentData.toObject();
+		let history = documentData.history
+		history.unshift(content)
+		history = history.slice(0, 5);
+		await ctx.model.Document.findByIdAndUpdate({_id: id}, {$set: {history: history}});
+		return true;
+	}
+
+	/**
 	 * 查询文档列表
 	 * @param {String} name 用户昵称
 	 * @return {Promise[users]} 承载用户列表的 Promise 对象
 	 */
 	async getDocumentList(searchParams) {
-		const {ctx} = this;
+		const {ctx, app} = this;
 		let userData = await ctx.getUserData()
-		let query = {parentId: searchParams.parentId, is_delete: {$ne: true}}
+		let query = {parentId: searchParams.parentId, is_delete: {$ne: true}, isTemplate: {$ne: true}}
+		let userId = app.mongoose.Types.ObjectId(userData._id).toString()
 		let documentList = await ctx.model.Document.find(query)
 			.populate({
-			path: 'author',
-			model: ctx.model.User,
-			select: 'name username _id email avatar '
-		}).exec()
+				path: 'author',
+				model: ctx.model.User,
+				select: 'name username _id email avatar'
+			}).exec()
 		let resultList = [];
-		documentList.forEach(item => {
-			item = item.toObject();
+		documentList.forEach(t => {
+			let item = t.toObject();
 			let isShow = false;
 			let isEditor = false;
 			// 判断是否有权限看
 			// open 只有作者可见， 团队成员内可见， 私密也只有成员科技， 参与协作可见该文档
-			if(item.author._id.toString() === userData._id.toString() || item.collection_user.includes(userData._id.toString())){
+			if (item.author._id == userData._id || item.collection_user.includes(userId)) {
 				isShow = true;
 				isEditor = true;
 			}
-			if(item.visitType === 'team' && item.members.includes(userData._id.toString())){
+			if (item.visitType === 'team' && item.members.includes(userId)) {
 				isShow = true;
 			}
-			if(isShow){
+			if (isShow) {
 				resultList.push({
 					_id: item._id,
 					parentId: item.parentId,
 					title: item.title,
 					type: item.type,
-					author: item.author,
+					author: {...item.author},
 					created: item.created,
 					updated: item.updated,
 					isEditor: isEditor,
@@ -92,8 +111,8 @@ class DocumentService extends Service {
 	 */
 	async getDocumentListByIds(ids = []) {
 		const {ctx} = this;
-		let query = { _id: { $in: ids }, is_delete: {$ne: true}};
-			// 联查用户表将用户创建者带上
+		let query = {_id: {$in: ids}, is_delete: {$ne: true}, isTemplate: {$ne: true}};
+		// 联查用户表将用户创建者带上
 		return ctx.model.Document.find(query)
 			.select('_id parentId title type created updated')
 			.populate({
@@ -107,10 +126,10 @@ class DocumentService extends Service {
 	 * 获取我的文档列表
 	 * @returns {Promise<RegExpExecArray>}
 	 */
-	async getCurrentUserDocumentsList(){
+	async getCurrentUserDocumentsList() {
 		const {ctx} = this;
 		let userData = await ctx.getUserData()
-		let query = {author: userData._id, type: {$ne: 'folder'}, is_delete: {$ne: true}}
+		let query = {author: userData._id, type: {$ne: 'folder'}, is_delete: {$ne: true}, isTemplate: {$ne: true}}
 		// 联查用户表将用户创建者带上
 		return ctx.model.Document.find(query)
 			.select('_id parentId title type created updated')
@@ -125,10 +144,10 @@ class DocumentService extends Service {
 	 * 获取我的收藏列表
 	 * @returns {Promise<void>}
 	 */
-	async getMyCollectDocumentList(){
+	async getMyCollectDocumentList() {
 		const {ctx} = this;
 		let userData = await ctx.getUserData()
-		let query = {collection_user:{ $elemMatch: {$in: userData._id}}, is_delete: {$ne: true}}
+		let query = {collection_user: {$elemMatch: {$in: userData._id}}, is_delete: {$ne: true}, isTemplate: {$ne: true}}
 		// 联查用户表将用户创建者带上
 		let docsData = ctx.model.Document.find(query)
 			.select('_id parentId title type created updated')
@@ -145,10 +164,10 @@ class DocumentService extends Service {
 	 * 获取我的协作列表
 	 * @returns {Promise<void>}
 	 */
-	async getMyCooperationDocumentList(){
+	async getMyCooperationDocumentList() {
 		const {ctx} = this;
 		let userData = await ctx.getUserData()
-		let query = {cooperation_user:{ $elemMatch: {$in: userData._id}}, is_delete: {$ne: true}}
+		let query = {cooperation_user: {$elemMatch: {$in: userData._id}}, is_delete: {$ne: true}, isTemplate: {$ne: true}}
 		// 联查用户表将用户创建者带上
 		return ctx.model.Document.find(query)
 			.select('_id parentId title type created updated')
@@ -163,10 +182,10 @@ class DocumentService extends Service {
 	 * 获取我的回收站列表
 	 * @returns {Promise<void>}
 	 */
-	async getMyRecycleBinDocumentList(){
+	async getMyRecycleBinDocumentList() {
 		const {ctx} = this;
 		let userData = await ctx.getUserData();
-		let query = {author: userData._id, is_delete: true};
+		let query = {author: userData._id, is_delete: true, isTemplate: {$ne: true}};
 		// 联查用户表将用户创建者带上
 		return ctx.model.Document.find(query)
 			.select('_id parentId title type created updated')
@@ -175,6 +194,20 @@ class DocumentService extends Service {
 				model: ctx.model.User,
 				select: 'name username _id email avatar '
 			}).exec();
+	}
+
+	/**
+	 * 获取我的模板
+	 * @returns {Promise<void>}
+	 */
+	async getMyTemplateDocument(type = '') {
+		const {ctx} = this;
+		let userData = await ctx.getUserData()
+		let query = {author: userData._id, isTemplate: true};
+		if (type) {
+			query.type = type;
+		}
+		return await ctx.model.Document.find(query).select('_id parentId title type created updated').exec();
 	}
 
 	/**
@@ -216,7 +249,7 @@ class DocumentService extends Service {
 		}
 		resultData.is_delete = documentData.is_delete;
 
-		if(!isVisit){
+		if (!isVisit) {
 			resultData.document.visitPass = documentData.visitPass;
 		}
 
@@ -269,7 +302,7 @@ class DocumentService extends Service {
 	 * @param id
 	 * @returns {Promise<boolean>}
 	 */
-	async distoryDocument(id){
+	async distoryDocument(id) {
 		const {ctx} = this;
 		return await ctx.model.Document.remove({_id: id});
 	}
@@ -279,7 +312,7 @@ class DocumentService extends Service {
 	 * @param id
 	 * @returns {Promise<*>}
 	 */
-	async recoveryDocument(id){
+	async recoveryDocument(id) {
 		const {ctx} = this;
 		// 检测所有父级是否有效
 		let parentIsExist = true;
@@ -291,10 +324,10 @@ class DocumentService extends Service {
 			try {
 				item = await ctx.model.Document.findOne({_id: item.parentId}).select('_id parentId title type, is_delete').exec();
 				item = item.toObject();
-			}catch (e) {
+			} catch (e) {
 				parentIsExist = false;
 			}
-			if(item.is_delete){
+			if (item.is_delete) {
 				parentIsExist = false;
 			}
 		}
@@ -375,7 +408,7 @@ class DocumentService extends Service {
 	 * @param id
 	 * @returns {Promise<void>}
 	 */
-	async documentVisitCountAdd(id){
+	async documentVisitCountAdd(id) {
 		const {ctx} = this;
 		// 访问数加一
 		await ctx.model.Document.findByIdAndUpdate({_id: id}, {$inc: {visit_count: 1}})
@@ -388,10 +421,10 @@ class DocumentService extends Service {
 	 * @param userIds
 	 * @returns {Promise<$addToSet.cooperation_user|{$each}|query.cooperation_user|{$elemMatch}>}
 	 */
-	async addCooperationUser(documentId, userIds){
+	async addCooperationUser(documentId, userIds) {
 		const {ctx} = this;
 		await ctx.model.Document.findByIdAndUpdate(documentId, {
-			$addToSet: { cooperation_user: { $each: userIds} }
+			$addToSet: {cooperation_user: {$each: userIds}}
 		})
 		let documentData = await ctx.model.Document.findOne({_id: documentId}).populate({
 			path: 'cooperation_user',
@@ -407,7 +440,7 @@ class DocumentService extends Service {
 	 * @param documentId
 	 * @returns {Promise<RegExpExecArray>}
 	 */
-	async getCooperationUserListByDocumentId(documentId){
+	async getCooperationUserListByDocumentId(documentId) {
 		const {ctx} = this;
 		let doc = await ctx.model.Document.findOne({_id: documentId}).populate({
 			path: 'cooperation_user',
@@ -424,7 +457,7 @@ class DocumentService extends Service {
 	 * @param userId
 	 * @returns {Promise<*>}
 	 */
-	async removeCooperationUser(documentId, userId){
+	async removeCooperationUser(documentId, userId) {
 		const {ctx} = this;
 		return await ctx.model.Document.updateOne({_id: documentId}, {$pull: {cooperation_user: userId}}, {
 			runValidators: true
@@ -436,7 +469,7 @@ class DocumentService extends Service {
 	 * @param documentId
 	 * @returns {Promise<$addToSet.members|{$each}>}
 	 */
-	async getMembersByDocumentId(documentId){
+	async getMembersByDocumentId(documentId) {
 		const {ctx} = this;
 		let doc = await ctx.model.Document.findOne({_id: documentId}).populate({
 			path: 'members',
@@ -453,7 +486,7 @@ class DocumentService extends Service {
 	 * @param users
 	 * @returns {Promise<*>}
 	 */
-	async setDocumentVisitTeam(documentId, users){
+	async setDocumentVisitTeam(documentId, users) {
 		const {ctx} = this;
 		return await ctx.model.Document.findByIdAndUpdate(documentId, {$set: {members: users, visitType: 'team'}});
 	}
@@ -463,7 +496,7 @@ class DocumentService extends Service {
 	 * @param documentId
 	 * @returns {Promise<*>}
 	 */
-	async setDocumentOpen(documentId){
+	async setDocumentOpen(documentId) {
 		const {ctx} = this;
 		return await ctx.model.Document.findByIdAndUpdate(documentId, {$set: {visitType: 'open'}});
 	}
@@ -474,7 +507,7 @@ class DocumentService extends Service {
 	 * @param pass
 	 * @returns {Promise<*>}
 	 */
-	async setDocumentPrivate(documentId, pass){
+	async setDocumentPrivate(documentId, pass) {
 		const {ctx} = this;
 		return await ctx.model.Document.findByIdAndUpdate(documentId, {$set: {visitType: 'private', visitPass: pass}});
 	}
@@ -485,7 +518,7 @@ class DocumentService extends Service {
 	 * @param pass
 	 * @returns {Promise<boolean>}
 	 */
-	async checkDocumentPassword(documentId, pass){
+	async checkDocumentPassword(documentId, pass) {
 		const {ctx} = this;
 		let doc = await ctx.model.Document.findOne({_id: documentId}).exec()
 		doc = doc.toObject();
@@ -497,13 +530,13 @@ class DocumentService extends Service {
 	 * @param documentId
 	 * @returns {Promise<void>}
 	 */
-	async findChildrenListById(documentId){
+	async findChildrenListById(documentId) {
 		const {ctx} = this;
 		let docsList = [];
 		let finFn = async id => {
 			let l = await ctx.model.Document.find({parentId: id}).exec();
-			for(let i = 0, len = l.length; i < len; i++){
-				if(l[i].type === 'folder'){
+			for (let i = 0, len = l.length; i < len; i++) {
+				if (l[i].type === 'folder') {
 					await finFn(l[i]._id);
 				}
 				docsList.push(l[i])

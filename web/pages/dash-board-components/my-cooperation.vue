@@ -17,7 +17,6 @@
                   :type="docs.type"
                   docShowType="list"
                   :docsData="docs"
-                  @open-folder="openFolder(docs)"
                   @refresh="getData"
                   :showAuthor="false"
                   :showCreateTime="true"
