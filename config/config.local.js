@@ -1,3 +1,7 @@
 module.exports =  {
-	BASE_URL: ''
+	BASE_URL: '',
+	mongoose: {
+		url: 'mongodb://localhost/inkwash',
+		options: {}
+	}
 }

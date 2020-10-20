@@ -36,12 +36,6 @@ module.exports = appInfo => {
 		secret: 'Z#fOGf$te4^J28l1Z&$#fXCNifv!ZHQnEG'
 	};
 
-  // mongdb 配置
-  config.mongoose = {
-    url: 'mongodb://localhost:27017/inkwash',
-    options: {},
-  };
-
   // 关掉csrf
 	config.security = {
 		csrf: {

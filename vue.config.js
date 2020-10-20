@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const CompressionPlugin = require('compression-webpack-plugin')
 
 let devServer = {
 	proxy: { // 代理
@@ -17,6 +18,8 @@ module.exports = {
 	// 输出文件目录
 	assetsDir: "static",
 	publicPath: './',
+	productionSourceMap: ['development', 'test'].includes(process.env.NODE_ENV),
+	parallel: require('os').cpus().length > 1,// 在多核机器下会默认开启。
 	// 修改 pages 入口
 	pages: {
 		index: {
@@ -51,5 +54,22 @@ module.exports = {
 				// 修改它的选项...
 				return options
 			})
+
+
+		// 移除 prefetch 插件
+		config.plugins.delete('prefetch')
+
+		// gzip做一下压缩
+		if (!['development', 'test'].includes(process.env.NODE_ENV)) {
+			config.plugin('compressionPlugin')
+				.use(new CompressionPlugin({
+					filename: '[path].gz[query]',
+					algorithm: 'gzip',
+					test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i, //匹配文件名
+					threshold: 10240,
+					minRatio: 0.8
+				}));
+		}
+
 	}
 }
