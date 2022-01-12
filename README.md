@@ -71,6 +71,12 @@ npm run build
 ### License
 Apache License 2.0
 
-## 建个微信群如果遇到问题可以一起交流
-![](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/6b493029c7ce4ac2adc0806aa4f7b812~tplv-k3u1fbpfcp-watermark.image)
+
+
+#### 捐赠作者
+
+如果你觉得这个项目对你有用或者有所启发，可以请作者喝杯果汁：（黄维）
+
+
+![d023c7f64e8d9f8b899b561f31a7463.jpg](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/250df22fcc9c48168f66333dfbfcfce8~tplv-k3u1fbpfcp-watermark.image??imageMogr2/auto-orient/strip%7CimageView2/2/w/200)
 
