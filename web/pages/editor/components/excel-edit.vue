@@ -29,6 +29,11 @@
 		mounted() {
 			this.initEditor();
 		},
+		watch: {
+			content(val) {
+				this.setContent(val);
+			}
+		},
 		methods: {
 			initEditor() {
 				let options = {

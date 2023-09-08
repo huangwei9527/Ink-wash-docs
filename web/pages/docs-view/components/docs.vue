@@ -35,8 +35,8 @@
 </template>
 
 <script>
-	import "vditor/src/assets/scss/index.scss"
 	import Vditor from 'vditor'
+    import "vditor/src/assets/less/index.less"
 	import authorHead from '@/components/author-head'
 	import {
 		Tooltip,
