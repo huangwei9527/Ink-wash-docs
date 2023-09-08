@@ -69,9 +69,12 @@ npm run dev-web
 ```
 ## 本地部署
 先build个前端版本，然后再部署egg服务到本地
+```
 1、npm run build-web
 2、npm run copy-web-html
 3、npm run start
+
+```
 
 ### License
 Apache License 2.0
