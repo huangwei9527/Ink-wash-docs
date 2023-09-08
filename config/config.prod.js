@@ -1,11 +1,7 @@
 module.exports =  {
 	BASE_URL: '',
 	mongoose: {
-		url: 'mongodb://localhost/inkwash',
-		options: {
-			auth: { authSource: "admin" },
-			user: 'xxx',
-			pass: 'xxx'
-		}
+		url: 'mongodb://127.0.0.1:27017/inkwash',
+		options: {}
 	}
 }
