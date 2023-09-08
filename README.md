@@ -5,6 +5,8 @@ Github: [传送门](https://github.com/huangwei9527/Ink-wash-docs)<br/>
 演示地址：[传送门](http://47.104.247.183:7001)<br/>
 掘金文章：[传送门](https://juejin.im/post/6886735919697788941)
 
+## node 版本 14
+
 ## 功能列表
 * [x] 登录注册
 * [x] 工作台|文档列表
@@ -63,20 +65,15 @@ Github: [传送门](https://github.com/huangwei9527/Ink-wash-docs)<br/>
 // 启动后端服务
 npm run dev
 // 启动前端项目
-npm run build
+npm run dev-web
 ```
 ## 本地部署
 先build个前端版本，然后再部署egg服务到本地
+1、npm run build-web
+2、npm run copy-web-html
+3、npm run start
 
 ### License
 Apache License 2.0
 
-
-
-#### 捐赠作者
-
-如果你觉得这个项目对你有用或者有所启发，可以请作者喝杯果汁：（黄维）
-
-
-![d023c7f64e8d9f8b899b561f31a7463.jpg](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/250df22fcc9c48168f66333dfbfcfce8~tplv-k3u1fbpfcp-watermark.image??imageMogr2/auto-orient/strip%7CimageView2/2/w/200)
 
